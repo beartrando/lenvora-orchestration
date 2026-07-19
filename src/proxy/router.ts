@@ -16,11 +16,11 @@ import './routes/profile.routes';
 
 
 export enum HttpMethod {
-    GET     = "GET",
-    POST    = "POST",
-    PUT     = "PUT",
-    PATCH   = "PATCH",
-    DELETE  = "DELETE",
+    GET = "GET",
+    POST = "POST",
+    PUT = "PUT",
+    PATCH = "PATCH",
+    DELETE = "DELETE",
 }
 
 export type RouteHandler = (request: orchestrationGrpc.ProxyRequest) => Promise<orchestrationGrpc.ProxyResponse>;
@@ -38,24 +38,24 @@ class Route {
 export class Router {
     private readonly routes: Route[] = [];
 
-    public get(path: string, handler: RouteHandler): void {
-        this.register(HttpMethod.GET, path, handler);
+    public get(path: string, handler: RouteHandler, authorizationRequired: boolean = true): void {
+        this.register(HttpMethod.GET, path, handler, authorizationRequired);
     }
 
-    public post(path: string, handler: RouteHandler): void {
-        this.register(HttpMethod.POST, path, handler);
+    public post(path: string, handler: RouteHandler, authorizationRequired: boolean = true): void {
+        this.register(HttpMethod.POST, path, handler, authorizationRequired);
     }
 
-    public put(path: string, handler: RouteHandler): void {
-        this.register(HttpMethod.PUT, path, handler);
+    public put(path: string, handler: RouteHandler, authorizationRequired: boolean = true): void {
+        this.register(HttpMethod.PUT, path, handler, authorizationRequired);
     }
 
-    public patch(path: string, handler: RouteHandler): void {
-        this.register(HttpMethod.PATCH, path, handler);
+    public patch(path: string, handler: RouteHandler, authorizationRequired: boolean = true): void {
+        this.register(HttpMethod.PATCH, path, handler, authorizationRequired);
     }
 
-    public delete(path: string, handler: RouteHandler): void {
-        this.register(HttpMethod.DELETE, path, handler);
+    public delete(path: string, handler: RouteHandler, authorizationRequired: boolean = true): void {
+        this.register(HttpMethod.DELETE, path, handler, authorizationRequired);
     }
 
     private parseMethod(method: string): HttpMethod {
@@ -72,15 +72,22 @@ export class Router {
         }
     }
 
+    private findRoute(
+        method: HttpMethod,
+        path: string,
+    ): Route | undefined {
+        return this.routes.find(
+            route =>
+                route.method === method &&
+                route.path === path,
+        );
+    }
+
     public async handle(request: orchestrationGrpc.ProxyRequest): Promise<orchestrationGrpc.ProxyResponse> {
 
         const method = this.parseMethod(request.method);
 
-        const route = this.routes.find(
-            (route) =>
-                route.method === method &&
-                route.path === request.path,
-        );
+        const route = this.findRoute(method, request.path);
 
         if (!route) {
             return {
@@ -97,6 +104,7 @@ export class Router {
         method: HttpMethod,
         path: string,
         handler: RouteHandler,
+        authorizationRequired: boolean = true,
     ): void {
 
 
@@ -113,7 +121,7 @@ export class Router {
         }
 
         this.routes.push(
-            new Route(method, path, handler),
+            new Route(method, path, handler, authorizationRequired),
         );
     }
 }

@@ -1,44 +1,42 @@
+import * as orchestrationGrpc from "../../grpc/generated/orchestration";
+import * as authGrpc from "../../grpc/generated/auth";
 import * as authService from "../../services/auth.service";
-import wrapper from "./wrapper";
-import {AnonymousSignInRequest, RefreshTokensRequest} from "../../grpc/generated/auth";
-import logger from "@shared/logger";
-import {getJwt} from "../../lib/authMetadata";
-import * as profileService from "../../services/profile.service";
+import {response} from "../adapter/response";
 
-// Middleware-функции для роутов
-export const health = wrapper(async (req, res) => {
-  return await authService.health();
-});
+export async function anonymousSignIn(
+    request: orchestrationGrpc.ProxyRequest,
+): Promise<orchestrationGrpc.ProxyResponse> {
 
-export const status = wrapper(async (req, res) => {
-  return await authService.status();
-});
+  const body = JSON.parse(
+      Buffer.from(request.body).toString(),
+  ) as authGrpc.AnonymousSignInRequest;
 
-export const livez = wrapper(async (req, res) => {
-  return await authService.livez();
-});
+  const auth = await authService.anonymousSignIn(body);
 
-export const readyz = wrapper(async (req, res) => {
-  return await authService.readyz();
-});
+  return response.ok(auth);
+}
 
-export const anonymousSignIn = wrapper(async (req, res) => {
-  const request = req.body as AnonymousSignInRequest;
+export async function getMyUser(
+    request: orchestrationGrpc.ProxyRequest,
+): Promise<orchestrationGrpc.ProxyResponse> {
 
-  return await authService.anonymousSignIn(request);
-});
+  const auth = await authService.getMyUser(request);
 
-export const getMyUser = wrapper(async (req, res) => {
-  logger.log('getMyUser');
-  const jwt = getJwt(req);
-  return await authService.getMyUser(jwt)
-});
+  return response.ok(auth);
+}
 
-export const refreshTokens = wrapper(async (req, res) => {
-  const request = req.body as RefreshTokensRequest;
-  // logger.log(request);
-  return await authService.refreshTokens(request);
-});
+export async function refreshTokens(
+    request: orchestrationGrpc.ProxyRequest,
+): Promise<orchestrationGrpc.ProxyResponse> {
+
+  const body = JSON.parse(
+      Buffer.from(request.body).toString(),
+  ) as authGrpc.RefreshTokensRequest;
+
+  const auth = await authService.refreshTokens(body);
+
+  return response.ok(auth);
+}
 
 // export const register = wrapper(async (req, res) => {
 //   const {email, password} = req.body;
