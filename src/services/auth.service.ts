@@ -7,13 +7,10 @@ export const getUser = async (userId: string) =>
 export const anonymousSignIn = async (req: authGrpc.AnonymousSignInRequest) =>
     await authClient.anonymousSignIn(req.deviceId);
 
-export const anonymousSignIn = async (req: authGrpc.AnonymousSignInRequest) =>
-    await authClient.anonymousSignIn(req.deviceId);
-
 export const refreshTokens = async (req: authGrpc.RefreshTokensRequest) =>
   await authClient.refreshTokens(req.token);
 
-export const getMyUser = async (jwt: string) => {
+export const getMy = async (jwt: string) => {
     const userId = jwt;
     return await authClient.getUser(userId);
 }

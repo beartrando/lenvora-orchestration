@@ -20,7 +20,8 @@ export async function getMyUser(
     request: orchestrationGrpc.ProxyRequest,
 ): Promise<orchestrationGrpc.ProxyResponse> {
 
-  const auth = await authService.getMyUser(request);
+
+  const auth = await authService.getMy(request);
 
   return response.ok(auth);
 }
