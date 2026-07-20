@@ -1,24 +1,23 @@
 import * as grpc from '@grpc/grpc-js';
 import * as orchestrationGrpc from '../generated/orchestration';
-import { callbackError } from './callback.error';
+import {callbackError} from './callback.error';
 import logger from '@shared/logger';
-import { router } from '../../proxy/router';
+import router from "../../proxy";
 
-export const route = async (
+export const proxy = async (
     call: grpc.ServerUnaryCall<
         orchestrationGrpc.ProxyRequest,
         orchestrationGrpc.ProxyResponse
     >,
     callback: grpc.sendUnaryData<orchestrationGrpc.ProxyResponse>,
 ) => {
-  try {
-    logger.log(call.request);
+    try {
+        const response = await router.handle(call.request);
 
-    const response = await router.handle(call.request);
-
-    callback(null, response);
-  } catch (err: any) {
-    logger.log(err);
-    callbackError(callback, err);
-  }
+        callback(null, response);
+    } catch (err: any) {
+        logger.log(call.request);
+        logger.log(err);
+        callbackError(callback, err);
+    }
 };

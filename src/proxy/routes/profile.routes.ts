@@ -1,6 +1,10 @@
-import * as profileController from '../controllers/profile.controller';
-import { router } from "../router";
+import * as profileController from "../controllers/profile.controller";
+import {Router} from "../router";
 
-router.get('/profile/getMyProfile', profileController.getMyProfile);
-router.get('/profile/getProfile', profileController.getProfile);
+export default function registerProfileRoutes(
+    router: Router,
+) {
+    router.get('/profile/getMe', profileController.getMe);
+    router.get('/profile/get', profileController.get);
+}
 

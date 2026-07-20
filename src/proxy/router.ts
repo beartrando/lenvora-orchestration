@@ -1,6 +1,7 @@
 import * as orchestrationGrpc from '../grpc/generated/orchestration';
 import './routes/auth.routes';
 import './routes/profile.routes';
+import logger from "@shared/logger";
 
 // const withAuth = (req: Request, res: Response, next: NextFunction) => {
 //     const isPublic = publicPaths.some(path => req.path.startsWith('/' + path));
@@ -58,6 +59,26 @@ export class Router {
         this.register(HttpMethod.DELETE, path, handler, authorizationRequired);
     }
 
+    public async handle(request: orchestrationGrpc.ProxyRequest): Promise<orchestrationGrpc.ProxyResponse> {
+
+        const method = this.parseMethod(request.method);
+
+        const route = this.findRoute(method, request.path);
+
+        // logger.log(method);
+        // logger.log(route);
+
+        if (!route) {
+            return {
+                status: 404,
+                headers: [],
+                body: Buffer.from("Not Found"),
+            };
+        }
+
+        return route.handler(request);
+    }
+
     private parseMethod(method: string): HttpMethod {
         switch (method) {
             case HttpMethod.GET:
@@ -81,23 +102,6 @@ export class Router {
                 route.method === method &&
                 route.path === path,
         );
-    }
-
-    public async handle(request: orchestrationGrpc.ProxyRequest): Promise<orchestrationGrpc.ProxyResponse> {
-
-        const method = this.parseMethod(request.method);
-
-        const route = this.findRoute(method, request.path);
-
-        if (!route) {
-            return {
-                status: 404,
-                headers: [],
-                body: Buffer.from("Not Found"),
-            };
-        }
-
-        return route.handler(request);
     }
 
     private register(
@@ -125,7 +129,5 @@ export class Router {
         );
     }
 }
-
-export const router = new Router();
 
 

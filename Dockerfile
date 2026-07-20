@@ -35,6 +35,8 @@ RUN pnpm install --offline --frozen-lockfile
 RUN mkdir -p ./services/orchestration/src/grpc/generated
 RUN pnpm --filter orchestration proto:generate
 
+RUN pnpm --filter orchestration prisma:generate
+
 # ---------- DEV ----------
 FROM deps AS dev
 
@@ -61,7 +63,6 @@ RUN pnpm --filter @shared/grpc-client-manager build
 RUN pnpm --filter @shared/kafka-manager build
 RUN pnpm --filter @shared/pg-boss-manager build
 
-RUN pnpm --filter orchestration prisma:generate
 RUN pnpm --filter orchestration build
 
 RUN pnpm --filter orchestration deploy /deploy --prod

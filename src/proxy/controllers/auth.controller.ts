@@ -1,42 +1,47 @@
 import * as orchestrationGrpc from "../../grpc/generated/orchestration";
 import * as authGrpc from "../../grpc/generated/auth";
-import * as authService from "../../services/auth.service";
 import {response} from "../adapter/response";
+import {getJwtFromProxyRequest} from "../../lib/proxyRequestMetadata";
+import * as authClient from "../../grpc/clients/auth.client";
+import {createMetadataWithJwt} from "../../lib/grpcRequestMetadata";
 
 export async function anonymousSignIn(
     request: orchestrationGrpc.ProxyRequest,
 ): Promise<orchestrationGrpc.ProxyResponse> {
 
-  const body = JSON.parse(
-      Buffer.from(request.body).toString(),
-  ) as authGrpc.AnonymousSignInRequest;
+    const grpcRequest = JSON.parse(
+        Buffer.from(request.body).toString(),
+    ) as authGrpc.AnonymousSignInRequest;
 
-  const auth = await authService.anonymousSignIn(body);
+    const auth = await authClient.anonymousSignIn(grpcRequest);
 
-  return response.ok(auth);
+    return response.ok(auth);
 }
 
-export async function getMyUser(
+export async function getMe(
     request: orchestrationGrpc.ProxyRequest,
 ): Promise<orchestrationGrpc.ProxyResponse> {
 
+    const metadata = createMetadataWithJwt(getJwtFromProxyRequest(request));
 
-  const auth = await authService.getMy(request);
+    const auth = await authClient.getMe(metadata);
 
-  return response.ok(auth);
+    return response.ok(auth);
 }
 
 export async function refreshTokens(
     request: orchestrationGrpc.ProxyRequest,
 ): Promise<orchestrationGrpc.ProxyResponse> {
 
-  const body = JSON.parse(
-      Buffer.from(request.body).toString(),
-  ) as authGrpc.RefreshTokensRequest;
+    const grpcRequest = JSON.parse(
+        Buffer.from(request.body).toString(),
+    ) as authGrpc.RefreshTokensRequest;
 
-  const auth = await authService.refreshTokens(body);
+    const metadata = createMetadataWithJwt(getJwtFromProxyRequest(request));
 
-  return response.ok(auth);
+    const auth = await authClient.refreshTokens(grpcRequest, metadata);
+
+    return response.ok(auth);
 }
 
 // export const register = wrapper(async (req, res) => {

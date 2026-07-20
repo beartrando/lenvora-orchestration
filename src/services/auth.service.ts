@@ -1,16 +1,22 @@
 import * as authClient from "../grpc/clients/auth.client";
 import * as authGrpc from "../grpc/generated/auth";
+import {createMetadataWithJwt} from "../lib/grpcRequestMetadata";
 
-export const getUser = async (userId: string) =>
-  await authClient.getUser(userId);
+export const get = async (userId: string) =>
+    await authClient.get(userId);
 
-export const anonymousSignIn = async (req: authGrpc.AnonymousSignInRequest) =>
-    await authClient.anonymousSignIn(req.deviceId);
+export const anonymousSignIn = async (deviceId: string) => {
+    const grpcRequest: authGrpc.AnonymousSignInRequest = {deviceId};
+    return await authClient.anonymousSignIn(grpcRequest);
+}
 
-export const refreshTokens = async (req: authGrpc.RefreshTokensRequest) =>
-  await authClient.refreshTokens(req.token);
+export const refreshTokens = async (token: string) => {
+    const grpcRequest: authGrpc.RefreshTokensRequest = {token};
+    return await authClient.refreshTokens(grpcRequest);
+}
 
-export const getMy = async (jwt: string) => {
-    const userId = jwt;
-    return await authClient.getUser(userId);
+export const getMe = async (jwt: string) => {
+    const metadata = createMetadataWithJwt(jwt)
+
+    return await authClient.getMe(userIdmetadata);
 }

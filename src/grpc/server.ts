@@ -7,14 +7,14 @@ import * as orchestrationHandler from "./handlers/orchestration.handler";
 const server = new grpc.Server();
 
 server.addService(HealthService, {
-  check: healthHandler.check,
-  status: healthHandler.status,
-  livez: healthHandler.livez,
-  readyz: healthHandler.readyz,
+    check: healthHandler.check,
+    status: healthHandler.status,
+    livez: healthHandler.livez,
+    readyz: healthHandler.readyz,
 });
 
 server.addService(OrchestrationService, {
-  route: orchestrationHandler.route,
+    proxy: orchestrationHandler.proxy,
 });
 
 export default server;

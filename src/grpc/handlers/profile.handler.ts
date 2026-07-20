@@ -6,44 +6,44 @@ import {callbackError} from './callback.error';
 import logger from "@shared/logger";
 import getUserIdFromMetadata from "../../lib/getUserIdFromMetadata";
 
-export const getMyProfile = async (
-  call: grpc.ServerUnaryCall<emptyGrpc.Empty, profileGrpc.ProfileObject>,
-  callback: grpc.sendUnaryData<profileGrpc.ProfileObject>
+export const getMe = async (
+    call: grpc.ServerUnaryCall<emptyGrpc.Empty, profileGrpc.ProfileObject>,
+    callback: grpc.sendUnaryData<profileGrpc.ProfileObject>
 ) => {
-  try {
-    const userId = getUserIdFromMetadata(call);
+    try {
+        const userId = getUserIdFromMetadata(call);
 
-    // if (!userId) {
-    //   return;
-    // }
+        // if (!userId) {
+        //   return;
+        // }
 
-    const response = await profileService.getProfileByUser(userId);
+        const response = await profileService.getByUser(userId);
 
-    callback(null, response);
+        callback(null, response);
 
-  } catch (err: any) {
-    logger.log(err);
-    callbackError(callback, err);
-  }
+    } catch (err: any) {
+        logger.log(err);
+        callbackError(callback, err);
+    }
 };
 
-export const getProfile = async (
-  call: grpc.ServerUnaryCall<profileGrpc.ProfileIdRequest, profileGrpc.ProfileObject>,
-  callback: grpc.sendUnaryData<profileGrpc.ProfileObject>
+export const get = async (
+    call: grpc.ServerUnaryCall<profileGrpc.ProfileIdRequest, profileGrpc.ProfileObject>,
+    callback: grpc.sendUnaryData<profileGrpc.ProfileObject>
 ) => {
-  try {
-    const {profileId} = call.request;
+    try {
+        const {profileId} = call.request;
 
-    // if (!userId) {
-    //   return;
-    // }
+        // if (!userId) {
+        //   return;
+        // }
 
-    const response = await profileService.getProfile(profileId);
+        const response = await profileService.get(profileId);
 
-    callback(null, response);
+        callback(null, response);
 
-  } catch (err: any) {
-    logger.log(err);
-    callbackError(callback, err);
-  }
+    } catch (err: any) {
+        logger.log(err);
+        callbackError(callback, err);
+    }
 };

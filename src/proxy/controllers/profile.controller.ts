@@ -1,38 +1,32 @@
-import * as profileService from "../../services/profile.service";
-import {Request} from "express";
-import wrapper from "./wrapper";
-import {getJwt} from "../../lib/authMetadata";
+import * as orchestrationGrpc from "../../grpc/generated/orchestration";
+import * as profileGrpc from "../../grpc/generated/profile";
+import * as profileClient from "../../grpc/clients/profile.client";
+import {response} from "../adapter/response";
+import {getJwtFromProxyRequest} from "../../lib/proxyRequestMetadata";
+import {createMetadataWithJwt} from "../../lib/grpcRequestMetadata";
 import logger from "@shared/logger";
 
-export const health = wrapper(async (req, res) => {
-  return await profileService.health();
-});
+export async function getMe(
+    request: orchestrationGrpc.ProxyRequest,
+): Promise<orchestrationGrpc.ProxyResponse> {
 
-export const status = wrapper(async (req, res) => {
-  return await profileService.status();
-});
+    const metadata = createMetadataWithJwt(getJwtFromProxyRequest(request));
 
-export const livez = wrapper(async (req, res) => {
-  return await profileService.livez();
-});
+    const profile = await profileClient.getMe(metadata);
 
-export const readyz = wrapper(async (req, res) => {
-  return await profileService.readyz();
-});
+    return response.ok(profile);
+}
 
-export const getMyProfile = wrapper(async (req, res) => {
-  const jwt = getJwt(req);
-  return await profileService.getMyProfile(jwt)
-});
+export async function get(
+    request: orchestrationGrpc.ProxyRequest,
+): Promise<orchestrationGrpc.ProxyResponse> {
+    const metadata = createMetadataWithJwt(getJwtFromProxyRequest(request));
 
-export const getProfile = wrapper(async (req: Request, res) => {
-  const jwt = getJwt(req);
-  // logger.info(req);
-  const profileId = req.query.profileId as string;
+    const grpcRequest = JSON.parse(
+        Buffer.from(request.body).toString(),
+    ) as profileGrpc.ProfileIdRequest;
 
-  if (!profileId) {
-    return res.status(400).json({error: "No profileId provided"});
-  }
+    const profile = await profileClient.get(grpcRequest, metadata);
 
-  return await profileService.getProfile(jwt, profileId)
-});
+    return response.ok(profile);
+}
