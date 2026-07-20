@@ -40,6 +40,8 @@ RUN pnpm --filter orchestration prisma:generate
 # ---------- DEV ----------
 FROM deps AS dev
 
+COPY services/orchestration/tsconfig.test.json ./services/orchestration/
+
 ENV NODE_ENV=development
 
 RUN chown -R node:node /usr/src/app
