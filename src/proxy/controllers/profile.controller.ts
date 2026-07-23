@@ -5,6 +5,7 @@ import {response} from "../adapter/response";
 import {getJwtFromProxyRequest} from "../../lib/proxyRequestMetadata";
 import {createMetadataWithJwt} from "../../lib/grpcRequestMetadata";
 import logger from "@shared/logger";
+import {parseQueryParams} from "../../lib/parseQueryParams";
 
 export async function getMe(
     request: orchestrationGrpc.ProxyRequest,
@@ -22,9 +23,9 @@ export async function get(
 ): Promise<orchestrationGrpc.ProxyResponse> {
     const metadata = createMetadataWithJwt(getJwtFromProxyRequest(request));
 
-    const grpcRequest = JSON.parse(
-        Buffer.from(request.body).toString(),
-    ) as profileGrpc.ProfileIdRequest;
+    logger.log(request.queryParams);
+
+    const grpcRequest = parseQueryParams<profileGrpc.ProfileIdRequest>(request.queryParams);
 
     const profile = await profileClient.get(grpcRequest, metadata);
 
