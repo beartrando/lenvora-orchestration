@@ -19,7 +19,7 @@ export const getJwtFromGrpcRequest = (
     call: grpc.ServerUnaryCall<any, any>
 ): string => {
     const authHeader = call.metadata.get('authorization')[0] as string;
-    logger.log(authHeader);
+    // logger.log(authHeader);
     if (!authHeader?.startsWith('Bearer ')) {
         // throw new Error('Missing or invalid Authorization header');
         logger.error('Missing or invalid Authorization header');

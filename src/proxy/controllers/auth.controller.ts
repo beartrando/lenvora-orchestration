@@ -3,15 +3,13 @@ import * as authGrpc from "../../grpc/generated/auth";
 import * as authService from "../../services/auth.service";
 import {response} from "../adapter/response";
 import {getJwtFromProxyRequest} from "../../lib/proxyRequestMetadata";
-import * as authClient from "../../grpc/clients/auth.client";
-import {createMetadataWithJwt} from "../../lib/grpcRequestMetadata";
 import {parseBody} from "../../lib/parseBody";
 
 export async function anonymousSignIn(
     request: orchestrationGrpc.ProxyRequest,
 ): Promise<orchestrationGrpc.ProxyResponse> {
 
-    const { deviceId } = parseBody<authGrpc.AnonymousSignInRequest>(request);
+    const {deviceId} = parseBody<authGrpc.AnonymousSignInRequest>(request.body);
 
     const auth = await authService.anonymousSignIn(deviceId);
 
@@ -22,9 +20,9 @@ export async function getMe(
     request: orchestrationGrpc.ProxyRequest,
 ): Promise<orchestrationGrpc.ProxyResponse> {
 
-    const metadata = createMetadataWithJwt(getJwtFromProxyRequest(request));
+    const jwt = getJwtFromProxyRequest(request);
 
-    const auth = await authClient.getMe(metadata);
+    const auth = await authService.getMe(jwt);
 
     return response.ok(auth);
 }
@@ -33,14 +31,9 @@ export async function refreshTokens(
     request: orchestrationGrpc.ProxyRequest,
 ): Promise<orchestrationGrpc.ProxyResponse> {
 
-    const grpcRequest =
-        parseBody<authGrpc.RefreshTokensRequest>(
-            request.body,
-        );
+    const {token} = parseBody<authGrpc.RefreshTokensRequest>(request.body);
 
-    const metadata = createMetadataWithJwt(getJwtFromProxyRequest(request));
-
-    const auth = await authClient.refreshTokens(grpcRequest, metadata);
+    const auth = await authService.refreshTokens(token);
 
     return response.ok(auth);
 }

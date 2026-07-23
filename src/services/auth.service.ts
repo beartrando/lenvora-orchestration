@@ -1,13 +1,26 @@
 import * as authClient from "../grpc/clients/auth.client";
+import * as profileService from "./profile.service";
 import * as authGrpc from "../grpc/generated/auth";
 import {createMetadataWithJwt} from "../lib/grpcRequestMetadata";
+import {getJwtFromProxyRequest} from "../lib/proxyRequestMetadata";
+import logger from "@shared/logger";
 
-export const get = async (userId: string) =>
-    await authClient.get(userId);
+export const get = async (userId: string, jwt: string) => {
+
+    const grpcRequest: authGrpc.UserIdRequest = {userId};
+    const metadata = createMetadataWithJwt(jwt);
+
+
+    return await authClient.get(grpcRequest, metadata);
+}
 
 export const anonymousSignIn = async (deviceId: string) => {
     const grpcRequest: authGrpc.AnonymousSignInRequest = {deviceId};
-    return await authClient.anonymousSignIn(grpcRequest);
+    const auth = await authClient.anonymousSignIn(grpcRequest);
+
+    await profileService.upsert(auth?.accessToken?? '');
+
+    return auth;
 }
 
 export const refreshTokens = async (token: string) => {
@@ -18,5 +31,5 @@ export const refreshTokens = async (token: string) => {
 export const getMe = async (jwt: string) => {
     const metadata = createMetadataWithJwt(jwt)
 
-    return await authClient.getMe(userIdmetadata);
+    return await authClient.getMe(metadata);
 }

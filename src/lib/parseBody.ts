@@ -1,13 +1,11 @@
-import * as orchestrationGrpc from "../grpc/generated/orchestration";
-
 export function parseBody<T>(
-    request: orchestrationGrpc.ProxyRequest,
+    body: Uint8Array,
 ): T {
-    if (request.body.length === 0) {
+    if (body.length === 0) {
         return {} as T;
     }
 
     return JSON.parse(
-        Buffer.from(request.body).toString(),
+        Buffer.from(body).toString(),
     ) as T;
 }

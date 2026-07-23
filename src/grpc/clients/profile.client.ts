@@ -11,20 +11,22 @@ const profileManager = new GrpcClientManager<profileGrpc.ProfileClient>(() => {
     return new profileGrpc.ProfileClient(config.serviceProfileUrl, grpc.credentials.createInsecure());
 });
 
-export const getByUser = (grpcRequest: authGrpc.UserIdRequest, metadata: grpc.Metadata): Promise<profileGrpc.ProfileObject | null> => {
-    // const grpcRequest: authGrpc.UserIdRequest = {userId};
-    return profileManager.call((client, cb) => client.getByUser(grpcRequest, metadata, cb));
+// export const getByUser = (grpcRequest: authGrpc.UserIdRequest, metadata: grpc.Metadata): Promise<profileGrpc.ProfileObject | null> => {
+//     // const grpcRequest: authGrpc.UserIdRequest = {userId};
+//     return profileManager.call((client, cb) => client.getByUser(grpcRequest, metadata, cb));
+// };
+
+export const upsert = (metadata: grpc.Metadata): Promise<profileGrpc.ProfileObject | null> => {
+    const grpcRequest: emptyGrpc.Empty = {};
+    return profileManager.call((client, cb) => client.upsert(grpcRequest, metadata, cb));
 };
 
 export const get = (grpcRequest: profileGrpc.ProfileIdRequest, metadata: grpc.Metadata): Promise<profileGrpc.ProfileObject | null> => {
-    // const grpcRequest: profileGrpc.ProfileIdRequest = {profileId};
     return profileManager.call((client, cb) => client.get(grpcRequest, metadata, cb));
 };
 
 export const getMe = (metadata: grpc.Metadata): Promise<profileGrpc.ProfileObject | null> => {
     const grpcRequest: emptyGrpc.Empty = {};
 
-    // logger.log(metadata);
-    // logger.log('here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1');
     return profileManager.call((client, cb) => client.getMe(grpcRequest, metadata, cb));
 };

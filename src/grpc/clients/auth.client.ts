@@ -3,6 +3,7 @@ import * as authGrpc from '../generated/auth';
 import * as emptyGrpc from '../generated/common/empty';
 import config from '../../config/config';
 import {GrpcClientManager} from '@shared/grpc-client-manager';
+import {RefreshTokensRequest} from "../generated/auth";
 
 const authManager = new GrpcClientManager<authGrpc.AuthClient>(() => {
     return new authGrpc.AuthClient(config.serviceAuthUrl, grpc.credentials.createInsecure());
@@ -22,10 +23,9 @@ export const login = (grpcRequest: authGrpc.LoginRequest): Promise<authGrpc.Auth
     return authManager.call((client, cb) => client.login(grpcRequest, cb));
 };
 
-export const refreshTokens = (grpcRequest: authGrpc.RefreshTokensRequest, metadata: grpc.Metadata): Promise<authGrpc.AuthObject | null> => {
-    // const grpcRequest: authGrpc.RefreshTokensRequest = {token};
-    return authManager.call((client, cb) => client.refreshTokens(grpcRequest, metadata, cb));
-};
+export const refreshTokens = (grpcRequest: authGrpc.RefreshTokensRequest): Promise<authGrpc.AuthObject | null> => {
+    return authManager.call((client, cb) => client.refreshTokens(grpcRequest, cb));
+}
 
 export const logout = (grpcRequest: authGrpc.LogoutRequest, metadata: grpc.Metadata): Promise<authGrpc.LogoutResponse | null> => {
     // const grpcRequest: authGrpc.LogoutRequest = {userId};
