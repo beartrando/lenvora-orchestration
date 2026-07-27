@@ -2,7 +2,6 @@ import * as authClient from "../grpc/clients/auth.client";
 import * as profileService from "./profile.service";
 import * as authGrpc from "../grpc/generated/auth";
 import {createMetadataWithJwt} from "../lib/grpcRequestMetadata";
-import {getJwtFromProxyRequest} from "../lib/proxyRequestMetadata";
 import logger from "@shared/logger";
 
 export const get = async (userId: string, jwt: string) => {
@@ -18,7 +17,9 @@ export const anonymousSignIn = async (deviceId: string) => {
     const grpcRequest: authGrpc.AnonymousSignInRequest = {deviceId};
     const auth = await authClient.anonymousSignIn(grpcRequest);
 
-    await profileService.upsert(auth?.accessToken?? '');
+    logger.log(auth);
+
+    await profileService.upsert(auth?.auth?.accessToken?? '');
 
     return auth;
 }

@@ -16,16 +16,16 @@ const profileManager = new GrpcClientManager<profileGrpc.ProfileClient>(() => {
 //     return profileManager.call((client, cb) => client.getByUser(grpcRequest, metadata, cb));
 // };
 
-export const upsert = (metadata: grpc.Metadata): Promise<profileGrpc.ProfileObject | null> => {
+export const upsert = (metadata: grpc.Metadata): Promise<profileGrpc.ProfileResponse | null> => {
     const grpcRequest: emptyGrpc.Empty = {};
-    return profileManager.call((client, cb) => client.upsert(grpcRequest, metadata, cb));
+    return profileManager.call((client, cb) => client.getOrCreate(grpcRequest, metadata, cb));
 };
 
-export const get = (grpcRequest: profileGrpc.ProfileIdRequest, metadata: grpc.Metadata): Promise<profileGrpc.ProfileObject | null> => {
+export const get = (grpcRequest: profileGrpc.ProfileIdRequest, metadata: grpc.Metadata): Promise<profileGrpc.ProfileResponse | null> => {
     return profileManager.call((client, cb) => client.get(grpcRequest, metadata, cb));
 };
 
-export const getMe = (metadata: grpc.Metadata): Promise<profileGrpc.ProfileObject | null> => {
+export const getMe = (metadata: grpc.Metadata): Promise<profileGrpc.ProfileResponse | null> => {
     const grpcRequest: emptyGrpc.Empty = {};
 
     return profileManager.call((client, cb) => client.getMe(grpcRequest, metadata, cb));

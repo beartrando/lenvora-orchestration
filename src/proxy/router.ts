@@ -70,7 +70,7 @@ export class Router {
 
         if (!route) {
             return {
-                status: 404,
+                statusCode: 404,
                 headers: [],
                 body: Buffer.from("Not Found"),
             };

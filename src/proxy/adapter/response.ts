@@ -12,7 +12,7 @@ export class ResponseAdapter {
 
     public noContent(): orchestrationGrpc.ProxyResponse {
         return {
-            status: 204,
+            statusCode: 204,
             headers: [],
             body: Buffer.alloc(0),
         };
@@ -49,12 +49,12 @@ export class ResponseAdapter {
     }
 
     private json(
-        status: number,
+        statusCode: number,
         body: unknown,
     ): orchestrationGrpc.ProxyResponse {
 
         return {
-            status,
+            statusCode,
             headers: [
                 {
                     key: "content-type",

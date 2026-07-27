@@ -15,6 +15,8 @@ export async function getMe(
 
     const jwt = getJwtFromProxyRequest(request);
 
+    logger.log(jwt);
+
     const profile = await profileService.getMe(jwt);
 
     return response.ok(profile);

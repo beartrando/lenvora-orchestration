@@ -4,7 +4,7 @@
 // import * as profileService from '../../services/profile.service';
 // import {callbackError} from './callback.error';
 // import logger from "@shared/logger";
-// import {getUserIdFromGrpcRequest} from "../../lib/grpcRequestMetadata";
+// import {getUserIdFromGrpcRequest} from "../../utils/grpcRequestMetadata";
 //
 // export const getMe = async (
 //     call: grpc.ServerUnaryCall<emptyGrpc.Empty, profileGrpc.ProfileObject>,
