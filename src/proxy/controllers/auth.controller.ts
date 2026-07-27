@@ -1,8 +1,14 @@
 import * as orchestrationGrpc from "../../grpc/generated/orchestration";
 import * as authGrpc from "../../grpc/generated/auth";
+import * as errorGrpc from "../../grpc/generated/common/error";
 import {response} from "../adapter/response";
 import {getJwtFromProxyRequest} from "../../utils/proxy-request-metadata";
 import {parseBody} from "../../utils/parse-body";
+import anonymousSignInUseCase from "../../use-cases/auth/anonymous-sign-in";
+import getMeUseCase from "../../use-cases/auth/get-me";
+import {getOrCreateUseCase as getOrCreateProfileUseCase,} from "../../use-cases/profile/get-or-create";
+import responseFactory from "../response-factory";
+import refreshTokensUseCase from "../../use-cases/auth/refresh-tokens";
 
 export async function anonymousSignIn(
     request: orchestrationGrpc.ProxyRequest,
@@ -10,9 +16,34 @@ export async function anonymousSignIn(
 
     const {deviceId} = parseBody<authGrpc.AnonymousSignInRequest>(request.body);
 
-    const auth = await authService.anonymousSignIn(deviceId);
+    const resp = await anonymousSignInUseCase.execute(deviceId);
 
-    return response.ok(auth);
+    if (!resp) {
+        return response.ok(
+            responseFactory.error(
+                authGrpc.AuthResponse,
+                errorGrpc.ErrorCode.SERVICE_UNAVAILABLE,
+                "Auth service unavailable",
+            )
+        );
+    }
+
+    if (resp.error) {
+        return response.ok(resp);
+    }
+
+    if (resp.auth?.accessToken) {
+        await getOrCreateProfileUseCase.execute(resp.auth.accessToken);
+        return response.ok(resp);
+    }
+
+    return response.ok(
+        responseFactory.error(
+            authGrpc.AuthResponse,
+            errorGrpc.ErrorCode.INVALID_RESPONSE,
+            "Auth service returned invalid response",
+        )
+    );
 }
 
 export async function getMe(
@@ -21,9 +52,8 @@ export async function getMe(
 
     const jwt = getJwtFromProxyRequest(request);
 
-    const auth = await authService.getMe(jwt);
-
-    return response.ok(auth);
+    const resp = response.ok(await getMeUseCase.execute(jwt));
+    return response.ok(resp);
 }
 
 export async function refreshTokens(
@@ -32,9 +62,9 @@ export async function refreshTokens(
 
     const {token} = parseBody<authGrpc.RefreshTokensRequest>(request.body);
 
-    const auth = await authService.refreshTokens(token);
 
-    return response.ok(auth);
+    const resp = response.ok(await refreshTokensUseCase.execute(token));
+    return response.ok(resp);
 }
 
 // export const register = wrapper(async (req, res) => {

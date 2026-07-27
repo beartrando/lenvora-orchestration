@@ -1,14 +1,14 @@
-import * as profileGrpc from "../../grpc/generated/profile";
-import {createMetadataWithJwt} from "../../utils/grpc-request-metadata";
-import * as profileClient from "../../grpc/clients/profile.client";
+import authClient from "../../grpc/clients/auth.client";
+import * as authGrpc from "../../grpc/generated/auth";
+import getOrCreateUseCase from "../profile/get-or-create";
 
 export class AnonymousSignInUseCase {
+
     async execute(
         deviceId: string,
-    ): Promise<profileGrpc.ProfileResponse> {
-        return authClient.getOrCreate(
-            createMetadataWithJwt(jwt),
-        );
+    ): Promise<authGrpc.AuthResponse | null> {
+        const grpcRequest: authGrpc.AnonymousSignInRequest = {deviceId};
+        return await authClient.anonymousSignIn(grpcRequest);
     }
 }
 

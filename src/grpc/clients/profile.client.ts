@@ -1,41 +1,47 @@
 import * as grpc from '@grpc/grpc-js';
 import * as profileGrpc from '../generated/profile';
+import * as authGrpc from "../generated/auth";
+import * as emptyGrpc from "../generated/common/empty";
 import config from '../../config/config';
 import {GrpcClientManager} from '@shared/grpc-client-manager';
+
 
 export class ProfileClient {
     private readonly manager: GrpcClientManager<profileGrpc.ProfileClient>;
 
-    constructor(
-        private readonly url: string,
-    ) {
+    private readonly empty: emptyGrpc.Empty = {};
 
+    constructor(private readonly url: string) {
         this.manager = new GrpcClientManager(
-            () =>
-                new profileGrpc.ProfileClient(
-                    this.url,
-                    grpc.credentials.createInsecure(),
-                ),
+            () => new profileGrpc.ProfileClient(this.url, grpc.credentials.createInsecure(),),
         );
     }
 
-    async getByUser(grpcRequest: authGrpc.UserIdRequest, metadata: grpc.Metadata): Promise<profileGrpc.ProfileResponse | null> {
-        return profileManager.call((client, cb) => client.getByUser(grpcRequest, metadata, cb));
+    async getByUser(
+        request: authGrpc.UserIdRequest,
+        metadata: grpc.Metadata,
+    ): Promise<profileGrpc.ProfileResponse | null> {
+        return this.manager.call((client, callback) => client.getByUser(request, metadata, callback,),);
     }
 
-    async getOrCreate(metadata: grpc.Metadata): Promise<profileGrpc.ProfileResponse | null> {
-        const grpcRequest: emptyGrpc.Empty = {};
-        return profileManager.call((client, cb) => client.getOrCreate(grpcRequest, metadata, cb));
+    async getOrCreate(
+        metadata: grpc.Metadata,
+    ): Promise<profileGrpc.ProfileResponse | null> {
+        return this.manager.call((client, callback) => client.getOrCreate(this.empty, metadata, callback,),);
     }
 
-    async get(grpcRequest: profileGrpc.ProfileIdRequest, metadata: grpc.Metadata): Promise<profileGrpc.ProfileResponse | null> {
-        return profileManager.call((client, cb) => client.get(grpcRequest, metadata, cb));
+    async get(
+        request: profileGrpc.ProfileIdRequest,
+        metadata: grpc.Metadata,
+    ): Promise<profileGrpc.ProfileResponse | null> {
+        return this.manager.call((client, callback) => client.get(request, metadata, callback,),);
     }
 
-    async getMe(metadata: grpc.Metadata): Promise<profileGrpc.ProfileResponse | null> {
-        const grpcRequest: emptyGrpc.Empty = {};
-
-        return profileManager.call((client, cb) => client.getMe(grpcRequest, metadata, cb));
+    async getMe(
+        metadata: grpc.Metadata,
+    ): Promise<profileGrpc.ProfileResponse | null> {
+        return this.manager.call((client, callback) => client.getMe(this.empty, metadata, callback,),
+        );
     }
 }
 

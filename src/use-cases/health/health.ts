@@ -2,6 +2,7 @@ import * as healthGrpc from "../../grpc/generated/common/health";
 import kafkaService, {KafkaService} from "../../services/kafka.service";
 import prismaService, {PrismaService} from "../../services/prisma.service";
 import pgBossService, {PgBossService} from "../../services/pg-boss.service";
+import config from "../../config/config";
 
 export class HealthUseCase {
     constructor(
