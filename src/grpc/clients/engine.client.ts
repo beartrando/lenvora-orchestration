@@ -3,7 +3,22 @@ import * as engineGrpc from '../generated/engine';
 import config from '../../config/config';
 import {GrpcClientManager} from '@shared/grpc-client-manager';
 
-const engineManager = new GrpcClientManager<engineGrpc.EngineClient>(() => {
-    return new engineGrpc.EngineClient(config.serviceEngineUrl, grpc.credentials.createInsecure());
-});
+export class EngineClient {
+    private readonly manager: GrpcClientManager<engineGrpc.EngineClient>;
 
+    constructor(
+        private readonly url: string,
+    ) {
+        this.manager = new GrpcClientManager(
+            () =>
+                new engineGrpc.EngineClient(
+                    this.url,
+                    grpc.credentials.createInsecure(),
+                ),
+        );
+    }
+}
+
+const engineClient = new EngineClient(config.serviceEngineUrl);
+
+export default engineClient;

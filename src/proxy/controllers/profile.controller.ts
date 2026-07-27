@@ -2,11 +2,11 @@ import * as orchestrationGrpc from "../../grpc/generated/orchestration";
 import * as profileGrpc from "../../grpc/generated/profile";
 import * as profileService from "../../services/profile.service";
 import {response} from "../adapter/response";
-import {getJwtFromProxyRequest} from "../../lib/proxyRequestMetadata";
-import {createMetadataWithJwt} from "../../lib/grpcRequestMetadata";
+import {getJwtFromProxyRequest} from "../../utils/proxy-request-metadata";
+import {createMetadataWithJwt} from "../../utils/grpc-request-metadata";
 import logger from "@shared/logger";
-import {parseQueryParams} from "../../lib/parseQueryParams";
-import {parseBody} from "../../lib/parseBody";
+import {parseQueryParams} from "../../utils/parse-query-params";
+import {parseBody} from "../../utils/parse-body";
 import * as authGrpc from "../../grpc/generated/auth";
 
 export async function getMe(

@@ -1,9 +1,8 @@
 import * as orchestrationGrpc from "../../grpc/generated/orchestration";
 import * as authGrpc from "../../grpc/generated/auth";
-import * as authService from "../../services/auth.service";
 import {response} from "../adapter/response";
-import {getJwtFromProxyRequest} from "../../lib/proxyRequestMetadata";
-import {parseBody} from "../../lib/parseBody";
+import {getJwtFromProxyRequest} from "../../utils/proxy-request-metadata";
+import {parseBody} from "../../utils/parse-body";
 
 export async function anonymousSignIn(
     request: orchestrationGrpc.ProxyRequest,

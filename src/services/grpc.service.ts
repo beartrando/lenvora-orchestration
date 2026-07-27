@@ -1,8 +1,10 @@
 import * as grpc from "@grpc/grpc-js";
-import {HealthService} from '../grpc/generated/common/health';
+import * as healthGrpc from '../grpc/generated/common/health';
+import * as orchestrationHandler from "../grpc/handlers/orchestration.handler";
 import * as healthHandler from "../grpc/handlers/health.handler";
 import logger from "@shared/logger";
 import config from "../config/config";
+import * as orchestrationGrpc from "../grpc/generated/orchestration";
 
 export class GrpcService {
     private readonly server: grpc.Server;
@@ -27,7 +29,7 @@ export class GrpcService {
 
                             return reject(err);
                         }
-                        this.server.start();
+
                         logger.info(
                             `🟢 gRPC server started on port ${port}`,
                         );
@@ -38,8 +40,14 @@ export class GrpcService {
         );
     }
 
+    private registerOrchestrationService() {
+        this.server.addService(orchestrationGrpc.OrchestrationService, {
+            proxy: orchestrationHandler.proxy,
+        });
+    }
+
     private registerHealthService() {
-        this.server.addService(HealthService, {
+        this.server.addService(healthGrpc.HealthService, {
             check: healthHandler.check,
             status: healthHandler.status,
             livez: healthHandler.livez,
@@ -48,6 +56,7 @@ export class GrpcService {
     }
 
     private addServices() {
+        this.registerOrchestrationService();
         this.registerHealthService();
     }
 

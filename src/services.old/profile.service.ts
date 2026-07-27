@@ -2,14 +2,9 @@ import * as profileClient from "../grpc/clients/profile.client";
 import * as profileGrpc from "../grpc/generated/profile";
 import * as errorGrpc from "../grpc/generated/common/error";
 import * as authService from "../services/auth.service";
-import {createMetadataWithJwt} from "../lib/grpcRequestMetadata";
+import {createMetadataWithJwt} from "../utils/grpc-request-metadata";
 import logger from "@shared/logger";
 
-export const upsert = async (jwt: string) => {
-    const metadata = createMetadataWithJwt(jwt);
-
-    return await profileClient.upsert(metadata);
-}
 
 // export const getByUser = async (userId: string) =>
 //   await profileClient.getByUser(userId);

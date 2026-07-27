@@ -1,7 +1,7 @@
 import * as authClient from "../grpc/clients/auth.client";
 import * as profileService from "./profile.service";
 import * as authGrpc from "../grpc/generated/auth";
-import {createMetadataWithJwt} from "../lib/grpcRequestMetadata";
+import {createMetadataWithJwt} from "../utils/grpc-request-metadata";
 import logger from "@shared/logger";
 
 export const get = async (userId: string, jwt: string) => {
