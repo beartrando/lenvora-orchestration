@@ -20,10 +20,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Prisma generated files
-src/infrastructure/db/prisma/dev.db
-src/infrastructure/db/prisma/dev.db-journal
-
 # Coverage output
 coverage/
 

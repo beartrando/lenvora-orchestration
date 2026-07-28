@@ -19,7 +19,6 @@ COPY services/orchestration/jest.config.js ./services/orchestration/
 COPY services/orchestration/tsconfig.json ./services/orchestration/
 COPY services/orchestration/src ./services/orchestration/src/
 COPY services/orchestration/__tests__ ./services/orchestration/__tests__/
-COPY services/orchestration/src/infrastructure/prisma ./services/orchestration/src/infrastructure/prisma/
 
 RUN apt-get update && apt-get install -y protobuf-compiler
 
