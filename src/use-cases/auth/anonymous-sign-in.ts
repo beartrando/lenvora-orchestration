@@ -1,5 +1,5 @@
-import authClient from "../../grpc/clients/auth.client";
-import * as authGrpc from "../../grpc/generated/auth";
+import authClient from "../../infrastructure/grpc/clients/auth.client";
+import * as authGrpc from "../../infrastructure/grpc/generated/auth";
 import getOrCreateUseCase from "../profile/get-or-create";
 
 export class AnonymousSignInUseCase {

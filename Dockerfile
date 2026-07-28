@@ -19,7 +19,7 @@ COPY services/orchestration/jest.config.js ./services/orchestration/
 COPY services/orchestration/tsconfig.json ./services/orchestration/
 COPY services/orchestration/src ./services/orchestration/src/
 COPY services/orchestration/__tests__ ./services/orchestration/__tests__/
-COPY services/orchestration/prisma ./services/orchestration/prisma/
+COPY services/orchestration/src/infrastructure/prisma ./services/orchestration/src/infrastructure/prisma/
 
 RUN apt-get update && apt-get install -y protobuf-compiler
 
@@ -32,7 +32,7 @@ FROM base AS deps
 RUN pnpm fetch
 RUN pnpm install --offline --frozen-lockfile
 
-RUN mkdir -p ./services/orchestration/src/grpc/generated
+RUN mkdir -p ./services/orchestration/src/infrastructure/grpc/generated
 RUN pnpm --filter orchestration proto:generate
 
 RUN pnpm --filter orchestration prisma:generate

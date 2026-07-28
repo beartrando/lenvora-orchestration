@@ -1,6 +1,6 @@
 // import {NextFunction, Request, Response} from 'express';
 // import jwt from 'jsonwebtoken';
-// import config from "../../config/config";
+// import app from "../../app/app";
 //
 //
 // export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
@@ -14,7 +14,7 @@
 //     }
 //
 //     try {
-//         const decoded = jwt.verify(token, config.jwtAccessSecret!);
+//         const decoded = jwt.verify(token, app.jwtAccessSecret!);
 //         (req as any).user = decoded;
 //         next();
 //     } catch (err) {

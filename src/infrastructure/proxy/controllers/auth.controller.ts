@@ -2,13 +2,13 @@ import * as orchestrationGrpc from "../../grpc/generated/orchestration";
 import * as authGrpc from "../../grpc/generated/auth";
 import * as errorGrpc from "../../grpc/generated/common/error";
 import {response} from "../adapter/response";
-import {getJwtFromProxyRequest} from "../../utils/proxy-request-metadata";
-import {parseBody} from "../../utils/parse-body";
-import anonymousSignInUseCase from "../../use-cases/auth/anonymous-sign-in";
-import getMeUseCase from "../../use-cases/auth/get-me";
-import {getOrCreateUseCase as getOrCreateProfileUseCase,} from "../../use-cases/profile/get-or-create";
+import {getJwtFromProxyRequest} from "../../../utils/proxy-request-metadata";
+import {parseBody} from "../../../utils/parse-body";
+import anonymousSignInUseCase from "../../../use-cases/auth/anonymous-sign-in";
+import getMeUseCase from "../../../use-cases/auth/get-me";
+import {getOrCreateUseCase as getOrCreateProfileUseCase,} from "../../../use-cases/profile/get-or-create";
 import responseFactory from "../response-factory";
-import refreshTokensUseCase from "../../use-cases/auth/refresh-tokens";
+import refreshTokensUseCase from "../../../use-cases/auth/refresh-tokens";
 
 export async function anonymousSignIn(
     request: orchestrationGrpc.ProxyRequest,

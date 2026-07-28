@@ -1,4 +1,4 @@
-import {ProxyRequest} from "../grpc/generated/orchestration";
+import {ProxyRequest} from "../infrastructure/grpc/generated/orchestration";
 import logger from "@shared/logger";
 
 export const getJwtFromProxyRequest = (

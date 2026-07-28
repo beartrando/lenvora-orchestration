@@ -1,6 +1,6 @@
 export const config = {
     appName: process.env.APP_NAME || 'orchestration',
-    appVersion: process.env.APP_VERSION || '1.0.0',
+    appVersion: process.env.APP_VERSION || '0.0.0',
     appEnv: process.env.APP_ENV || 'prod',
 
     grpcPort: Number(process.env.GRPC_PORT) || 50051,

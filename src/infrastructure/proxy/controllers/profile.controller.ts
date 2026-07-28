@@ -1,14 +1,14 @@
 import * as orchestrationGrpc from "../../grpc/generated/orchestration";
 import * as profileGrpc from "../../grpc/generated/profile";
 import {response} from "../adapter/response";
-import {getJwtFromProxyRequest} from "../../utils/proxy-request-metadata";
-import {createMetadataWithJwt} from "../../utils/grpc-request-metadata";
+import {getJwtFromProxyRequest} from "../../../utils/proxy-request-metadata";
+import {createMetadataWithJwt} from "../../../utils/grpc-request-metadata";
 import logger from "@shared/logger";
-import {parseQueryParams} from "../../utils/parse-query-params";
-import {parseBody} from "../../utils/parse-body";
+import {parseQueryParams} from "../../../utils/parse-query-params";
+import {parseBody} from "../../../utils/parse-body";
 import * as authGrpc from "../../grpc/generated/auth";
-import getMeUseCase from "../../use-cases/profile/get-me";
-import getUseCase from "../../use-cases/profile/get";
+import getMeUseCase from "../../../use-cases/profile/get-me";
+import getUseCase from "../../../use-cases/profile/get";
 
 export async function getMe(
     request: orchestrationGrpc.ProxyRequest,

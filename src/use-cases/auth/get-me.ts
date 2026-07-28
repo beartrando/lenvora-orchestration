@@ -1,6 +1,6 @@
 import {createMetadataWithJwt} from "../../utils/grpc-request-metadata";
-import authClient from "../../grpc/clients/auth.client";
-import * as authGrpc from "../../grpc/generated/auth";
+import authClient from "../../infrastructure/grpc/clients/auth.client";
+import * as authGrpc from "../../infrastructure/grpc/generated/auth";
 
 export class GetMeUseCase {
     async execute(
