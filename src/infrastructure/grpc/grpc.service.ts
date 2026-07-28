@@ -3,7 +3,7 @@ import * as healthGrpc from './generated/common/health';
 import * as orchestrationHandler from "./handlers/orchestration.handler";
 import * as healthHandler from "./handlers/health.handler";
 import logger from "@shared/logger";
-import config from "../../config/config";
+import config from "./config";
 import * as orchestrationGrpc from "./generated/orchestration";
 
 export class GrpcService {

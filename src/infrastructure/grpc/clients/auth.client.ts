@@ -2,7 +2,7 @@ import * as grpc from '@grpc/grpc-js';
 import * as authGrpc from '../generated/auth';
 import * as emptyGrpc from "../generated/common/empty";
 import * as responseGrpc from "../generated/common/response";
-import config from '../../../config/config';
+import config from '../config';
 import {GrpcClientManager} from '@shared/grpc-client-manager';
 
 

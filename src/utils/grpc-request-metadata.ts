@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import config from '../config/config';
+import config from '../infrastructure/app/config';
 import * as grpc from '@grpc/grpc-js';
 import logger from "@shared/logger";
 

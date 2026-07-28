@@ -1,4 +1,4 @@
-import config from "../../config/config";
+import config from "../../infrastructure/app/config";
 import {ServiceStatus} from "../../infrastructure/grpc/generated/common/health";
 import {LivezUseCase} from "./livez";
 
