@@ -1,10 +1,10 @@
 import * as grpc from "@grpc/grpc-js";
-import * as healthGrpc from './generated/common/health';
+import * as healthGrpc from '../../contracts/proto/generated/common/health';
+import * as orchestrationGrpc from "../../contracts/proto/generated/orchestration";
 import * as orchestrationHandler from "./handlers/orchestration.handler";
 import * as healthHandler from "./handlers/health.handler";
 import logger from "@shared/logger";
 import config from "./config";
-import * as orchestrationGrpc from "./generated/orchestration";
 
 export class GrpcService {
     private readonly server: grpc.Server;

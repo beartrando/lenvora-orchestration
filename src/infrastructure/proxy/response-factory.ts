@@ -1,5 +1,5 @@
-import * as responseGrpc from "../grpc/generated/common/response";
-import * as errorGrpc from "../grpc/generated/common/error";
+import * as responseGrpc from "../../contracts/proto/generated/common/response";
+import * as errorGrpc from "../../contracts/proto/generated/common/error";
 
 export class ResponseFactory {
     error<

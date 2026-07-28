@@ -1,7 +1,7 @@
 import responseFactory from "../response-factory";
-import * as responseGrpc from "../../grpc/generated/common/response";
-import * as errorGrpc from "../../grpc/generated/common/error";
-import * as orchestrationGrpc from "../../grpc/generated/orchestration";
+import * as responseGrpc from "../../../contracts/proto/generated/common/response";
+import * as errorGrpc from "../../../contracts/proto/generated/common/error";
+import * as orchestrationGrpc from "../../../contracts/proto/generated/orchestration";
 
 export class ResponseAdapter {
 
@@ -38,3 +38,5 @@ export class ResponseAdapter {
 }
 
 export const response = new ResponseAdapter();
+
+export default response;

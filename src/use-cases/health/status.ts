@@ -1,11 +1,10 @@
+import * as healthGrpc from "../../contracts/proto/generated/common/health";
 import config from "../../infrastructure/app/config";
-import {ServiceStatus} from "../../infrastructure/grpc/generated/common/health";
-import {LivezUseCase} from "./livez";
 
 const startedAt = Date.now();
 
 export class StatusUseCase {
-    async execute(): Promise<ServiceStatus> {
+    async execute(): Promise<healthGrpc.ServiceStatus> {
         const uptimeMs = Date.now() - startedAt;
 
         return {

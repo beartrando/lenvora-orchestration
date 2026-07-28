@@ -1,4 +1,4 @@
-import * as healthGrpc from "../../infrastructure/grpc/generated/common/health";
+import * as healthGrpc from "../../contracts/proto/generated/common/health";
 import messageService, {MessageService} from "../../infrastructure/message/message.service";
 import dbService, {DbService} from "../../infrastructure/db/db.service";
 import jobService, {JobService} from "../../infrastructure/job/job.service";

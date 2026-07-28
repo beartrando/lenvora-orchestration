@@ -1,5 +1,5 @@
 import * as grpc from '@grpc/grpc-js';
-import * as orchestrationGrpc from '../generated/orchestration';
+import * as orchestrationGrpc from '../../../contracts/proto/generated/orchestration';
 import {callbackError} from './callback.error';
 import logger from '@shared/logger';
 import router from "../../proxy";

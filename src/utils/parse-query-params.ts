@@ -9,3 +9,5 @@ export function parseQueryParams<T>(
 
     return result as T;
 }
+
+export default parseQueryParams;

@@ -1,4 +1,4 @@
-import * as authGrpc from "../../infrastructure/grpc/generated/auth";
+import * as authGrpc from "../../contracts/proto/generated/auth";
 import authClient from "../../infrastructure/grpc/clients/auth.client";
 
 export class RefreshTokensUseCase {

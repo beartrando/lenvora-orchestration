@@ -1,8 +1,7 @@
-import {ReadyStatus} from "../../infrastructure/grpc/generated/common/health";
-import {LivezUseCase} from "./livez";
+import * as healthGrpc from "../../contracts/proto/generated/common/health";
 
 export class ReadyzUseCase {
-    async execute(): Promise<ReadyStatus> {
+    async execute(): Promise<healthGrpc.ReadyStatus> {
         return {ready: true};
     }
 }

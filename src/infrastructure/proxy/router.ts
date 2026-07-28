@@ -1,4 +1,4 @@
-import * as orchestrationGrpc from '../grpc/generated/orchestration';
+import * as orchestrationGrpc from '../../contracts/proto/generated/orchestration';
 import './routes/auth.routes';
 import './routes/profile.routes';
 import logger from "@shared/logger";
@@ -10,10 +10,8 @@ import logger from "@shared/logger";
 //     if (isPublic) return next();
 //     return verifyToken(req, res, next)
 // };
-// app.use(withAuth);
 //
-// app.use('/auth', authRoutes);
-// app.use('/profile', profileRoutes);
+// app.use(withAuth);
 
 
 export enum HttpMethod {

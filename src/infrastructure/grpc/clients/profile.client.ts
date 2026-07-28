@@ -1,7 +1,7 @@
 import * as grpc from '@grpc/grpc-js';
-import * as profileGrpc from '../generated/profile';
-import * as authGrpc from "../generated/auth";
-import * as emptyGrpc from "../generated/common/empty";
+import * as profileGrpc from '../../../contracts/proto/generated/profile';
+import * as authGrpc from "../../../contracts/proto/generated/auth";
+import * as emptyGrpc from "../../../contracts/proto/generated/common/empty";
 import config from '../config';
 import {GrpcClientManager} from '@shared/grpc-client-manager';
 

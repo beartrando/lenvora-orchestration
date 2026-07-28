@@ -1,9 +1,9 @@
-import * as orchestrationGrpc from "../../grpc/generated/orchestration";
-import * as authGrpc from "../../grpc/generated/auth";
-import * as errorGrpc from "../../grpc/generated/common/error";
-import {response} from "../adapter/response";
-import {getJwtFromProxyRequest} from "../../../utils/proxy-request-metadata";
-import {parseBody} from "../../../utils/parse-body";
+import * as orchestrationGrpc from "../../../contracts/proto/generated/orchestration";
+import * as authGrpc from "../../../contracts/proto/generated/auth";
+import * as errorGrpc from "../../../contracts/proto/generated/common/error";
+import response from "../adapter/response";
+import getJwtFromProxyRequest from "../../../utils/proxy-request-metadata";
+import parseBody from "../../../utils/parse-body";
 import anonymousSignInUseCase from "../../../use-cases/auth/anonymous-sign-in";
 import getMeUseCase from "../../../use-cases/auth/get-me";
 import {getOrCreateUseCase as getOrCreateProfileUseCase,} from "../../../use-cases/profile/get-or-create";

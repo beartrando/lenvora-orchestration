@@ -9,3 +9,5 @@ export function parseBody<T>(
         Buffer.from(body).toString(),
     ) as T;
 }
+
+export default parseBody;
