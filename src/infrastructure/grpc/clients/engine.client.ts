@@ -1,5 +1,5 @@
 import * as grpc from '@grpc/grpc-js';
-import * as engineGrpc from '../generated/engine';
+import * as engineGrpc from '../../../contracts/proto/generated/engine';
 import config from '../config';
 import {GrpcClientManager} from '@shared/grpc-client-manager';
 
