@@ -1,26 +1,26 @@
 import responseFactory from "../response-factory";
-import * as responseGrpc from "../../../contracts/proto/generated/common/response";
-import * as errorGrpc from "../../../contracts/proto/generated/common/error";
-import * as orchestrationGrpc from "../../../contracts/proto/generated/orchestration";
+import * as responseProto from "../../../contracts/proto/common/response";
+import * as errorProto from "../../../contracts/proto/common/error";
+import * as orchestrationProto from "../../../contracts/proto/orchestration";
 
 export class ResponseAdapter {
 
     private normalize(data: unknown): unknown {
         return data ?? responseFactory.error(
-            responseGrpc.EmptyResponse,
-            errorGrpc.ErrorCode.SERVICE_UNAVAILABLE,
+            responseProto.EmptyResponse,
+            errorProto.ErrorCode.SERVICE_UNAVAILABLE,
             "Service unavailable",
         );
     }
 
-    public ok(data: unknown): orchestrationGrpc.ProxyResponse {
+    public ok(data: unknown): orchestrationProto.ProxyResponse {
         return this.json(200, this.normalize(data));
     }
 
     private json(
         statusCode: number,
         body: unknown,
-    ): orchestrationGrpc.ProxyResponse {
+    ): orchestrationProto.ProxyResponse {
 
         return {
             statusCode,

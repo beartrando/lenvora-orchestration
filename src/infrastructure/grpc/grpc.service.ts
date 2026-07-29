@@ -1,6 +1,6 @@
 import * as grpc from "@grpc/grpc-js";
-import * as healthGrpc from '../../contracts/proto/generated/common/health';
-import * as orchestrationGrpc from "../../contracts/proto/generated/orchestration";
+import * as healthProto from '../../contracts/proto/common/health';
+import * as orchestrationProto from "../../contracts/proto/orchestration";
 import * as orchestrationHandler from "./handlers/orchestration.handler";
 import * as healthHandler from "./handlers/health.handler";
 import logger from "@shared/logger";
@@ -41,13 +41,13 @@ export class GrpcService {
     }
 
     private registerOrchestrationService() {
-        this.server.addService(orchestrationGrpc.OrchestrationService, {
+        this.server.addService(orchestrationProto.OrchestrationService, {
             proxy: orchestrationHandler.proxy,
         });
     }
 
     private registerHealthService() {
-        this.server.addService(healthGrpc.HealthService, {
+        this.server.addService(healthProto.HealthService, {
             check: healthHandler.check,
             status: healthHandler.status,
             livez: healthHandler.livez,

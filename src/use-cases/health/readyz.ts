@@ -1,7 +1,7 @@
-import * as healthGrpc from "../../contracts/proto/generated/common/health";
+import * as healthProto from "../../contracts/proto/common/health";
 
 export class ReadyzUseCase {
-    async execute(): Promise<healthGrpc.ReadyStatus> {
+    async execute(): Promise<healthProto.ReadyStatus> {
         return {ready: true};
     }
 }

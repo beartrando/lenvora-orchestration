@@ -1,4 +1,4 @@
-import * as healthGrpc from "../../contracts/proto/generated/common/health";
+import * as healthProto from "../../contracts/proto/common/health";
 import messageService, {MessageService} from "../../infrastructure/message/message.service";
 import dbService, {DbService} from "../../infrastructure/db/db.service";
 import jobService, {JobService} from "../../infrastructure/job/job.service";
@@ -13,13 +13,13 @@ export class HealthUseCase {
     ) {
     }
 
-    private toHealthStatus(ok: boolean): healthGrpc.HealthStatus {
+    private toHealthStatus(ok: boolean): healthProto.HealthStatus {
         return ok
-            ? healthGrpc.HealthStatus.HEALTH_STATUS_OK
-            : healthGrpc.HealthStatus.HEALTH_STATUS_FAIL;
+            ? healthProto.HealthStatus.HEALTH_STATUS_OK
+            : healthProto.HealthStatus.HEALTH_STATUS_FAIL;
     }
 
-    async execute(): Promise<healthGrpc.HealthReport> {
+    async execute(): Promise<healthProto.HealthReport> {
         const [dbOk, messageOk, jobOk] = await Promise.all([this.dbService.check(), this.messageService.check(), this.jobService.check()]);
 
         const components = {

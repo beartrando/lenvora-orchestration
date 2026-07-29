@@ -31,7 +31,7 @@ FROM base AS deps
 RUN pnpm fetch
 RUN pnpm install --offline --frozen-lockfile
 
-RUN mkdir -p ./services/orchestration/src/contracts/proto/generated
+RUN mkdir -p ./services/orchestration/src/contracts/proto
 RUN pnpm --filter orchestration proto:generate
 
 RUN pnpm --filter orchestration prisma:generate

@@ -1,10 +1,10 @@
-import * as healthGrpc from "../../contracts/proto/generated/common/health";
+import * as healthProto from "../../contracts/proto/common/health";
 import config from "../../infrastructure/app/config";
 
 const startedAt = Date.now();
 
 export class StatusUseCase {
-    async execute(): Promise<healthGrpc.ServiceStatus> {
+    async execute(): Promise<healthProto.ServiceStatus> {
         const uptimeMs = Date.now() - startedAt;
 
         return {

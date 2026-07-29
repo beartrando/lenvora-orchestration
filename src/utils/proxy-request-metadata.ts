@@ -1,4 +1,4 @@
-import {ProxyRequest} from "../contracts/proto/generated/orchestration";
+import {ProxyRequest} from "../contracts/proto/orchestration";
 import logger from "@shared/logger";
 
 export const getJwtFromProxyRequest = (

@@ -1,15 +1,15 @@
 import * as grpc from '@grpc/grpc-js';
-import * as orchestrationGrpc from '../../../contracts/proto/generated/orchestration';
+import * as orchestrationProto from '../../../contracts/proto/orchestration';
 import callbackError from './callback.error';
 import logger from '@shared/logger';
 import router from "../../proxy";
 
 export const proxy = async (
     call: grpc.ServerUnaryCall<
-        orchestrationGrpc.ProxyRequest,
-        orchestrationGrpc.ProxyResponse
+        orchestrationProto.ProxyRequest,
+        orchestrationProto.ProxyResponse
     >,
-    callback: grpc.sendUnaryData<orchestrationGrpc.ProxyResponse>,
+    callback: grpc.sendUnaryData<orchestrationProto.ProxyResponse>,
 ) => {
     try {
         const response = await router.handle(call.request);

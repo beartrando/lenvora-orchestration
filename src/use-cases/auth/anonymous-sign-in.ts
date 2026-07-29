@@ -1,13 +1,13 @@
 import authClient from "../../infrastructure/grpc/clients/auth.client";
-import * as authGrpc from "../../contracts/proto/generated/auth";
+import * as authProto from "../../contracts/proto/auth";
 import getOrCreateUseCase from "../profile/get-or-create";
 
 export class AnonymousSignInUseCase {
 
     async execute(
         deviceId: string,
-    ): Promise<authGrpc.AuthResponse | null> {
-        const grpcRequest: authGrpc.AnonymousSignInRequest = {deviceId};
+    ): Promise<authProto.AuthResponse | null> {
+        const grpcRequest: authProto.AnonymousSignInRequest = {deviceId};
         return await authClient.anonymousSignIn(grpcRequest);
     }
 }

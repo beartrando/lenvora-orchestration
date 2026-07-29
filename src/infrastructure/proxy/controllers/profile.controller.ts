@@ -1,6 +1,6 @@
-import * as orchestrationGrpc from "../../../contracts/proto/generated/orchestration";
-import * as profileGrpc from "../../../contracts/proto/generated/profile";
-import * as authGrpc from "../../../contracts/proto/generated/auth";
+import * as orchestrationProto from "../../../contracts/proto/orchestration";
+import * as profileProto from "../../../contracts/proto/profile";
+import * as authProto from "../../../contracts/proto/auth";
 import response from "../adapter/response";
 import getJwtFromProxyRequest from "../../../utils/proxy-request-metadata";
 import logger from "@shared/logger";
@@ -10,8 +10,8 @@ import getMeUseCase from "../../../use-cases/profile/get-me";
 import getUseCase from "../../../use-cases/profile/get";
 
 export async function getMe(
-    request: orchestrationGrpc.ProxyRequest,
-): Promise<orchestrationGrpc.ProxyResponse> {
+    request: orchestrationProto.ProxyRequest,
+): Promise<orchestrationProto.ProxyResponse> {
 
     const jwt = getJwtFromProxyRequest(request);
 
@@ -23,10 +23,10 @@ export async function getMe(
 }
 
 export async function get(
-    request: orchestrationGrpc.ProxyRequest,
-): Promise<orchestrationGrpc.ProxyResponse> {
+    request: orchestrationProto.ProxyRequest,
+): Promise<orchestrationProto.ProxyResponse> {
 
-    const { profileId } = parseQueryParams<profileGrpc.ProfileIdRequest>(request.queryParams);
+    const { profileId } = parseQueryParams<profileProto.ProfileIdRequest>(request.queryParams);
 
     logger.log(request.body);
     logger.log(profileId);

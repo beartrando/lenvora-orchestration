@@ -1,17 +1,17 @@
-import * as responseGrpc from "../../contracts/proto/generated/common/response";
-import * as errorGrpc from "../../contracts/proto/generated/common/error";
+import * as responseProto from "../../contracts/proto/common/response";
+import * as errorProto from "../../contracts/proto/common/error";
 
 export class ResponseFactory {
     error<
         T extends {
             create(data: {
-                error: errorGrpc.ErrorObject;
+                error: errorProto.ErrorObject;
             }): R;
         },
         R
     >(
         responseType: T,
-        code: errorGrpc.ErrorCode,
+        code: errorProto.ErrorCode,
         message: string,
     ): R {
         return responseType.create({

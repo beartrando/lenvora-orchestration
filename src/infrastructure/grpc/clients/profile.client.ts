@@ -1,45 +1,45 @@
 import * as grpc from '@grpc/grpc-js';
-import * as profileGrpc from '../../../contracts/proto/generated/profile';
-import * as authGrpc from "../../../contracts/proto/generated/auth";
-import * as emptyGrpc from "../../../contracts/proto/generated/common/empty";
+import * as profileProto from '../../../contracts/proto/profile';
+import * as authProto from "../../../contracts/proto/auth";
+import * as emptyProto from "../../../contracts/proto/common/empty";
 import config from '../config';
 import {GrpcClientManager} from '@shared/grpc-client-manager';
 
 
 export class ProfileClient {
-    private readonly manager: GrpcClientManager<profileGrpc.ProfileClient>;
+    private readonly manager: GrpcClientManager<profileProto.ProfileClient>;
 
-    private readonly empty: emptyGrpc.Empty = {};
+    private readonly empty: emptyProto.Empty = {};
 
     constructor(private readonly url: string) {
         this.manager = new GrpcClientManager(
-            () => new profileGrpc.ProfileClient(this.url, grpc.credentials.createInsecure(),),
+            () => new profileProto.ProfileClient(this.url, grpc.credentials.createInsecure(),),
         );
     }
 
     async getByUser(
-        request: authGrpc.UserIdRequest,
+        request: authProto.UserIdRequest,
         metadata: grpc.Metadata,
-    ): Promise<profileGrpc.ProfileResponse | null> {
+    ): Promise<profileProto.ProfileResponse | null> {
         return this.manager.call((client, callback) => client.getByUser(request, metadata, callback,),);
     }
 
     async getOrCreate(
         metadata: grpc.Metadata,
-    ): Promise<profileGrpc.ProfileResponse | null> {
+    ): Promise<profileProto.ProfileResponse | null> {
         return this.manager.call((client, callback) => client.getOrCreate(this.empty, metadata, callback,),);
     }
 
     async get(
-        request: profileGrpc.ProfileIdRequest,
+        request: profileProto.ProfileIdRequest,
         metadata: grpc.Metadata,
-    ): Promise<profileGrpc.ProfileResponse | null> {
+    ): Promise<profileProto.ProfileResponse | null> {
         return this.manager.call((client, callback) => client.get(request, metadata, callback,),);
     }
 
     async getMe(
         metadata: grpc.Metadata,
-    ): Promise<profileGrpc.ProfileResponse | null> {
+    ): Promise<profileProto.ProfileResponse | null> {
         return this.manager.call((client, callback) => client.getMe(this.empty, metadata, callback,),
         );
     }

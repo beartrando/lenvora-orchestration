@@ -1,17 +1,17 @@
 import * as grpc from '@grpc/grpc-js';
-import * as engineGrpc from '../../../contracts/proto/generated/engine';
+import * as engineProto from '../../../contracts/proto/engine';
 import config from '../config';
 import {GrpcClientManager} from '@shared/grpc-client-manager';
 
 export class EngineClient {
-    private readonly manager: GrpcClientManager<engineGrpc.EngineClient>;
+    private readonly manager: GrpcClientManager<engineProto.EngineClient>;
 
     constructor(
         private readonly url: string,
     ) {
         this.manager = new GrpcClientManager(
             () =>
-                new engineGrpc.EngineClient(
+                new engineProto.EngineClient(
                     this.url,
                     grpc.credentials.createInsecure(),
                 ),
