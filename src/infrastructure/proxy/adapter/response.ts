@@ -5,16 +5,16 @@ import * as orchestrationProto from "../../../contracts/proto/orchestration";
 
 export class ResponseAdapter {
 
+    public ok(data: unknown): orchestrationProto.ProxyResponse {
+        return this.json(200, this.normalize(data));
+    }
+
     private normalize(data: unknown): unknown {
         return data ?? responseFactory.error(
             responseProto.EmptyResponse,
             errorProto.ErrorCode.SERVICE_UNAVAILABLE,
             "Service unavailable",
         );
-    }
-
-    public ok(data: unknown): orchestrationProto.ProxyResponse {
-        return this.json(200, this.normalize(data));
     }
 
     private json(

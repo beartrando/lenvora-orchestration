@@ -1,10 +1,20 @@
-import * as authController from "../controllers/auth.controller";
 import {Router} from "../router";
+import AuthController from "../controllers/auth.controller";
 
-export default function registerAuthRoutes(
-    router: Router,
-) {
-    router.post("/auth/anonymousSignIn", authController.anonymousSignIn, false);
-    router.get("/auth/getMe", authController.getMe);
-    router.post("/auth/refreshTokens", authController.refreshTokens, false);
+export class AuthRouter {
+
+    constructor(
+        private readonly authController: AuthController,
+    ) {
+    }
+
+    register(
+        router: Router,
+    ) {
+        router.post("/auth/anonymousSignIn", this.authController.anonymousSignIn, false);
+        router.get("/auth/getMe", this.authController.getMe);
+        router.post("/auth/refreshTokens", this.authController.refreshTokens, false);
+    }
 }
+
+export default AuthRouter;

@@ -3,7 +3,7 @@ export function parseQueryParams<T>(
 ): T {
     const result: Record<string, string> = {};
 
-    for (const { key, value } of queryParams) {
+    for (const {key, value} of queryParams) {
         result[key] = value;
     }
 

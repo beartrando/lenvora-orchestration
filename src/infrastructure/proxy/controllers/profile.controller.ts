@@ -1,38 +1,43 @@
 import * as orchestrationProto from "../../../contracts/proto/orchestration";
 import * as profileProto from "../../../contracts/proto/profile";
-import * as authProto from "../../../contracts/proto/auth";
 import response from "../adapter/response";
-import getJwtFromProxyRequest from "../../../utils/proxy-request-metadata";
-import logger from "@shared/logger";
-import parseQueryParams from "../../../utils/parse-query-params";
-import parseBody from "../../../utils/parse-body";
-import getMeUseCase from "../../../use-cases/profile/get-me";
-import getUseCase from "../../../use-cases/profile/get";
+import parseQueryParams from "../utils/parse-query-params";
+import jwtFromProxyRequest from "../utils/jwt-from-proxy-request";
+import GetMeUseCase from "../../../application/use-cases/profile/get-me";
+import GetUseCase from "../../../application/use-cases/profile/get";
 
-export async function getMe(
-    request: orchestrationProto.ProxyRequest,
-): Promise<orchestrationProto.ProxyResponse> {
+export class ProfileController {
 
-    const jwt = getJwtFromProxyRequest(request);
+    constructor(
+        private readonly getMeUseCase: GetMeUseCase,
+        private readonly getUseCase: GetUseCase,
+    ) {
+    }
 
-    logger.log(jwt);
+    async getMe(
+        request: orchestrationProto.ProxyRequest,
+    ): Promise<orchestrationProto.ProxyResponse> {
+        const jwt = jwtFromProxyRequest(request);
 
-    const profile = await getMeUseCase.execute(jwt);
+        const profile = await this.getMeUseCase.execute(jwt);
 
-    return response.ok(profile);
+        return response.ok(profile);
+    }
+
+    async get(
+        request: orchestrationProto.ProxyRequest,
+    ): Promise<orchestrationProto.ProxyResponse> {
+
+        const {profileId} = parseQueryParams<profileProto.ProfileIdRequest>(request.queryParams);
+
+        // logger.log(request.body);
+        // logger.log(profileId);
+        const jwt = jwtFromProxyRequest(request);
+
+        const profile = await this.getUseCase.execute(profileId, jwt);
+
+        return response.ok(profile);
+    }
 }
 
-export async function get(
-    request: orchestrationProto.ProxyRequest,
-): Promise<orchestrationProto.ProxyResponse> {
-
-    const { profileId } = parseQueryParams<profileProto.ProfileIdRequest>(request.queryParams);
-
-    logger.log(request.body);
-    logger.log(profileId);
-    const jwt = getJwtFromProxyRequest(request);
-
-    const profile = await getUseCase.execute(profileId, jwt);
-
-    return response.ok(profile);
-}
+export default ProfileController;

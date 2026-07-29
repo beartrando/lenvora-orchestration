@@ -1,7 +1,6 @@
-import {ProxyRequest} from "../contracts/proto/orchestration";
-import logger from "@shared/logger";
+import {ProxyRequest} from "../../../contracts/proto/orchestration";
 
-export const getJwtFromProxyRequest = (
+export const jwtFromProxyRequest = (
     req: ProxyRequest,
 ): string => {
 
@@ -24,4 +23,4 @@ export const getJwtFromProxyRequest = (
     return token;
 }
 
-export default getJwtFromProxyRequest;
+export default jwtFromProxyRequest;

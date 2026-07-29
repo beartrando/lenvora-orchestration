@@ -1,7 +1,6 @@
 import * as orchestrationProto from '../../contracts/proto/orchestration';
-import './routes/auth.routes';
-import './routes/profile.routes';
-import logger from "@shared/logger";
+import AuthRoutes from "./routes/auth.routes";
+import ProfileRoutes from "./routes/profile.routes";
 
 // const withAuth = (req: Request, res: Response, next: NextFunction) => {
 //     const isPublic = publicPaths.some(path => req.path.startsWith('/' + path));
@@ -36,6 +35,14 @@ class Route {
 
 export class Router {
     private readonly routes: Route[] = [];
+
+    constructor(
+        public readonly authRoutes: AuthRoutes,
+        public readonly profileRoutes: ProfileRoutes,
+    ) {
+        authRoutes.register(this);
+        profileRoutes.register(this);
+    }
 
     public get(path: string, handler: RouteHandler, authorizationRequired: boolean = true): void {
         this.register(HttpMethod.GET, path, handler, authorizationRequired);
@@ -128,4 +135,4 @@ export class Router {
     }
 }
 
-
+export default Router;

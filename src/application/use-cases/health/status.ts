@@ -1,5 +1,5 @@
-import * as healthProto from "../../contracts/proto/common/health";
-import config from "../../infrastructure/app/config";
+import * as healthProto from "../../../contracts/proto/common/health";
+import config from "../../../infrastructure/app/config";
 
 const startedAt = Date.now();
 
@@ -21,6 +21,5 @@ export class StatusUseCase {
     }
 }
 
-const statusUseCase = new StatusUseCase();
 
-export default statusUseCase;
+export default StatusUseCase;

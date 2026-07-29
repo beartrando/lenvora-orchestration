@@ -1,4 +1,3 @@
-import * as responseProto from "../../contracts/proto/common/response";
 import * as errorProto from "../../contracts/proto/common/error";
 
 export class ResponseFactory {

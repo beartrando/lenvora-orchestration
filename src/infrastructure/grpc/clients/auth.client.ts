@@ -16,6 +16,7 @@ export class AuthClient {
             () => new authProto.AuthClient(this.url, grpc.credentials.createInsecure(),),
         );
     }
+
     async anonymousSignIn(request: authProto.AnonymousSignInRequest): Promise<authProto.AuthResponse | null> {
         return this.manager.call((client, callback) => client.anonymousSignIn(request, callback));
     }
@@ -24,8 +25,8 @@ export class AuthClient {
         return this.manager.call((client, callback) => client.refreshTokens(request, callback));
     }
 
-    async logout(request: emptyProto.Empty, metadata: grpc.Metadata): Promise<responseProto.EmptyResponse | null> {
-        return this.manager.call((client, callback) => client.logout(request, metadata, callback));
+    async logout(metadata: grpc.Metadata): Promise<responseProto.EmptyResponse | null> {
+        return this.manager.call((client, callback) => client.logout(this.empty, metadata, callback));
     }
 
     async get(request: authProto.UserIdRequest, metadata: grpc.Metadata): Promise<authProto.UserResponse | null> {

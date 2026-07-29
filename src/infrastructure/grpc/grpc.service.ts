@@ -1,15 +1,18 @@
 import * as grpc from "@grpc/grpc-js";
 import * as healthProto from '../../contracts/proto/common/health';
 import * as orchestrationProto from "../../contracts/proto/orchestration";
-import * as orchestrationHandler from "./handlers/orchestration.handler";
-import * as healthHandler from "./handlers/health.handler";
 import logger from "@shared/logger";
-import config from "./config";
+import {OrchestrationHandler} from "./handlers/orchestration.handler";
+import HealthHandler from "./handlers/health.handler";
 
 export class GrpcService {
     private readonly server: grpc.Server;
 
-    constructor(private readonly grpcPort: number) {
+    constructor(
+        private readonly port: number,
+        private readonly orchestrationHandler: OrchestrationHandler,
+        private readonly healthHandler: HealthHandler,
+    ) {
         this.server = new grpc.Server();
     }
 
@@ -18,7 +21,7 @@ export class GrpcService {
             (resolve, reject) => {
                 this.addServices();
                 this.server.bindAsync(
-                    `0.0.0.0:${this.grpcPort}`,
+                    `0.0.0.0:${this.port}`,
                     grpc.ServerCredentials.createInsecure(),
                     (err, port) => {
                         if (err) {
@@ -40,18 +43,22 @@ export class GrpcService {
         );
     }
 
+    stop() {
+        this.server.forceShutdown();
+    }
+
     private registerOrchestrationService() {
         this.server.addService(orchestrationProto.OrchestrationService, {
-            proxy: orchestrationHandler.proxy,
+            proxy: this.orchestrationHandler.proxy,
         });
     }
 
     private registerHealthService() {
         this.server.addService(healthProto.HealthService, {
-            check: healthHandler.check,
-            status: healthHandler.status,
-            livez: healthHandler.livez,
-            readyz: healthHandler.readyz,
+            check: this.healthHandler.check,
+            status: this.healthHandler.status,
+            livez: this.healthHandler.livez,
+            readyz: this.healthHandler.readyz,
         });
     }
 
@@ -59,13 +66,7 @@ export class GrpcService {
         this.registerOrchestrationService();
         this.registerHealthService();
     }
-
-    stop() {
-        this.server.forceShutdown();
-    }
 }
 
-export const grpcService = new GrpcService(config.grpcPort);
-
-export default grpcService;
+export default GrpcService;
 

@@ -1,4 +1,4 @@
-import * as healthProto from "../../contracts/proto/common/health";
+import * as healthProto from "../../../contracts/proto/common/health";
 
 export class LivezUseCase {
     async execute(): Promise<healthProto.LiveStatus> {
@@ -9,7 +9,5 @@ export class LivezUseCase {
 }
 
 
-const livezUseCase = new LivezUseCase();
-
-export default livezUseCase;
+export default LivezUseCase;
 
