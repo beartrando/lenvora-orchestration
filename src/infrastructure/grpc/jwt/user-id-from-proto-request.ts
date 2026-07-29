@@ -1,5 +1,7 @@
 import * as grpc from '@grpc/grpc-js';
 import logger from "@shared/logger";
+import userIdFromJwt from "../../auth/user-id-from-jwt";
+import jwtFromProtoRequest from "./jwt-from-proto-request";
 
 
 export const userIdFromProtoRequest = (

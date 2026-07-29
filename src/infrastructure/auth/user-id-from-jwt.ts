@@ -12,4 +12,4 @@ export const userIdFromJwt = (token: string): string => {
 };
 
 
-export default userIdFromJwt();
+export default userIdFromJwt;
