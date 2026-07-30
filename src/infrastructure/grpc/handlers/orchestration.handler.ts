@@ -5,8 +5,6 @@ import logger from '@shared/logger';
 import Router from "../../proxy/router";
 
 export class OrchestrationHandler {
-
-
     constructor(private readonly router: Router) {
     }
 

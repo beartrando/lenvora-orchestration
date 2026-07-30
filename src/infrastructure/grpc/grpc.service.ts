@@ -2,7 +2,7 @@ import * as grpc from "@grpc/grpc-js";
 import * as healthProto from '../../contracts/proto/common/health';
 import * as orchestrationProto from "../../contracts/proto/orchestration";
 import logger from "@shared/logger";
-import {OrchestrationHandler} from "./handlers/orchestration.handler";
+import OrchestrationHandler from "./handlers/orchestration.handler";
 import HealthHandler from "./handlers/health.handler";
 
 export class GrpcService {
