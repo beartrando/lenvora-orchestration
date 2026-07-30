@@ -3,7 +3,6 @@ import config from "./config";
 
 import Id from "../../domain/value-objects/id";
 import AccessToken from "../../domain/value-objects/access-token.vo";
-import RefreshToken from "../../domain/value-objects/refresh-token.vo";
 
 import TokenService from "../../application/ports/token-service.port";
 
@@ -31,6 +30,12 @@ export class JwtService implements TokenService {
         const payload = this.payload(token.value, this.accessSecret);
 
         return new Id(payload.sub);
+    }
+
+    verifyAccessToken(
+        token: AccessToken,
+    ): Id {
+        return this.payload(token.value, this.accessSecret);
     }
 
     private payload(
