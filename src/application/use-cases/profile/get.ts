@@ -1,6 +1,6 @@
 import * as profileProto from "../../../contracts/proto/profile";
 import profileClient from "../../../infrastructure/grpc/clients/profile.client";
-import metadataWithJwt from "../../../infrastructure/grpc/jwt/metadata-with-jwt";
+import AuthHelper from "../../../infrastructure/grpc/helpers/auth.helper";
 
 export class GetUseCase {
     async execute(
@@ -8,7 +8,7 @@ export class GetUseCase {
         jwt: string,
     ): Promise<profileProto.ProfileResponse | null> {
         return profileClient.getOrCreate(
-            metadataWithJwt(jwt),
+            AuthHelper.getMetadata(jwt),
         );
     }
 }
