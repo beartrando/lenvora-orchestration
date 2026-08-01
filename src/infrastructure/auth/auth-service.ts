@@ -11,7 +11,7 @@ interface TokenPayload extends JwtPayload {
     sub: string;
 }
 
-export class JwtService implements TokenService {
+export class AuthService implements TokenService {
 
     private readonly accessSecret: jwt.Secret = config.jwtAccessSecret;
 
@@ -37,5 +37,5 @@ export class JwtService implements TokenService {
     }
 }
 
-export default JwtService;
+export default AuthService;
 
