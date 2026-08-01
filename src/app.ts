@@ -11,6 +11,7 @@ const dbService = new DbService();
 
 const grpcService = buildGrpcService(dbService, messageService, jobService);
 ``
+
 async function bootstrap(): Promise<void> {
 
     try {
