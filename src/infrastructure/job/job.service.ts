@@ -1,13 +1,16 @@
-import pgBossManager from '@shared/pg-boss-manager';
-import {config as kafkaConfig, kafkaProducersConfig} from "../message/config";
+import pgBossManager, {SqlExecutor} from '@shared/pg-boss-manager';
 import config from "./config";
 import logger from "@shared/logger";
 import sleep from "../../utils/sleep";
+import {KafkaConfig} from "@shared/kafka-manager";
 
 
 export class JobService {
 
-    constructor() {
+    constructor(
+        private readonly kafkaConfig: KafkaConfig,
+        private readonly kafkaProducersConfig: Record<string, string>,
+    ) {
     }
 
     async start(): Promise<void> {
@@ -20,14 +23,14 @@ export class JobService {
     }
 
     async initKafkaBridge(): Promise<void> {
-        const topics = Object.values(kafkaProducersConfig);
+        const topics = Object.values(this.kafkaProducersConfig);
 
         while (true) {
             try {
                 await Promise.all(
                     topics.map(topic =>
                         pgBossManager.kafka.start(
-                            kafkaConfig,
+                            this.kafkaConfig,
                             topic,
                         ),
                     ),
@@ -45,6 +48,26 @@ export class JobService {
             }
         }
     }
+
+    public async enqueue<T extends object>(
+        topic: string,
+        data: T,
+    ): Promise<number> {
+        const boss = await pgBossManager.waitUntilReady();
+
+        return pgBossManager.queue.enqueue(topic, data)
+    }
+
+    public async enqueueTx<T extends object>(
+        topic: string,
+        data: T,
+        tx: SqlExecutor,
+    ): Promise<number> {
+        const boss = await pgBossManager.waitUntilReady();
+
+        return pgBossManager.queue.enqueueTx(topic, data, tx)
+    }
+
 
     async stop() {
         return await pgBossManager.stop();
