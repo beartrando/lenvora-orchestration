@@ -6,9 +6,9 @@ export const config = {
     groupId: process.env.KAFKA_GROUP_ID ?? 'orchestration-service',
 };
 
-export const kafkaConsumersConfig: Record<string, ConsumerConfig> = {};
+export const messageConsumersConfig: Record<string, string> = {};
 
-export const kafkaProducersConfig: Record<string, string> = {};
+export const messageProducersConfig: Record<string, string> = {};
 
 export default config;
 

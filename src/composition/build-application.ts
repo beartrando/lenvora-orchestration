@@ -22,14 +22,15 @@ import Router from "../infrastructure/proxy/router";
 import OrchestrationHandler from "../infrastructure/grpc/handlers/orchestration.handler";
 import {config as grpcConfig} from "../infrastructure/grpc/config";
 import Application from "../application/application";
-import {config as kafkaConfig, kafkaProducersConfig} from "../infrastructure/message/config";
+import {config as messageConfig, messageProducersConfig, messageConsumersConfig} from "../infrastructure/message/config";
+import {config as jobConfig} from "../infrastructure/job/config";
 
 
 
 function buildApplication() {
 
-    const messageService = new MessageService(kafkaConfig);
-    const jobService = new JobService(kafkaConfig, kafkaProducersConfig)
+    const messageService = new MessageService(messageConfig, messageConsumersConfig);
+    const jobService = new JobService(jobConfig, messageConfig, messageProducersConfig)
     const dbService = new DbService();
 
     const anonymousSignInUseCase = new AnonymousSignInUseCase();
