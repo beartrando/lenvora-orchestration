@@ -1,6 +1,6 @@
-import DbService from "../infrastructure/db/db.service";
-import MessageService from "../infrastructure/message/message.service";
-import JobService from "../infrastructure/job/job.service";
+import DbService from "../infrastructure/db/service";
+import MessageService from "../infrastructure/message/service";
+import JobService from "../infrastructure/job/service";
 import AnonymousSignInUseCase from "../application/use-cases/auth/anonymous-sign-in";
 import GetMeUseCase from "../application/use-cases/auth/get-me";
 import LogoutUseCase from "../application/use-cases/auth/logout";
@@ -10,7 +10,7 @@ import StatusUseCase from "../application/use-cases/health/status";
 import LivezUseCase from "../application/use-cases/health/livez";
 import ReadyzUseCase from "../application/use-cases/health/readyz";
 import HealthHandler from "../infrastructure/grpc/handlers/health.handler";
-import GrpcService from "../infrastructure/grpc/grpc.service";
+import GrpcService from "../infrastructure/grpc/service";
 import GetOrCreateUseCase from "../application/use-cases/profile/get-or-create";
 import {GetMeUseCase as GetMyProfileUseCase} from "../application/use-cases/profile/get-me";
 import {GetUseCase as GetProfileUseCase} from "../application/use-cases/profile/get";
