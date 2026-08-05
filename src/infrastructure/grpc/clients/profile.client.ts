@@ -36,13 +36,6 @@ export class ProfileClient {
     ): Promise<profileProto.ProfileResponse | null> {
         return this.manager.call((client, callback) => client.get(request, metadata, callback,),);
     }
-
-    async getMe(
-        metadata: grpc.Metadata,
-    ): Promise<profileProto.ProfileResponse | null> {
-        return this.manager.call((client, callback) => client.getMe(this.empty, metadata, callback,),
-        );
-    }
 }
 
 const profileClient = new ProfileClient(grpcConfig.serviceProfileUrl);
