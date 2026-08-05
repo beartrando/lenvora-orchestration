@@ -113,4 +113,4 @@ LABEL org.opencontainers.image.version="$VERSION"
 
 WORKDIR /usr/src/app/services/orchestration
 
-CMD ["pnpm", "--filter", "orchestration", "migrate"]
+CMD ["pnpm", "--filter", "orchestration", "migrate:deploy"]
