@@ -12,7 +12,7 @@ export class ProfileController {
 
     constructor(
         private readonly authService: AuthService,
-        private readonly getByUSerUseCase: GetProfileByUserUseCase,
+        private readonly getProfileByUserUseCase: GetProfileByUserUseCase,
         private readonly getUseCase: GetProfileUseCase,
     ) {
     }
@@ -22,7 +22,7 @@ export class ProfileController {
     ): Promise<orchestrationProto.ProxyResponse> {
         const accessToken = jwtFromProxyRequest(request);
         const userId = this.authService.verifyAccessToken(accessToken);
-        const profile = await this.getByUSerUseCase.execute(userId, accessToken);
+        const profile = await this.getProfileByUserUseCase.execute(userId, accessToken);
 
         return response.ok(profile);
     }

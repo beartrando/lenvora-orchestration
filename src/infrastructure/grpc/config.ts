@@ -1,4 +1,4 @@
-export const config = {
+export const grpcConfig = {
     port: Number(process.env.GRPC_PORT) ?? 50051,
 
     serviceAuthUrl: process.env.SERVICE_AUTH_URL ?? 'auth:50051',
@@ -7,4 +7,4 @@ export const config = {
     serviceBattleUrl: process.env.SERVICE_BATTLE_URL ?? 'battle:50051',
 };
 
-export default config;
+export default grpcConfig;

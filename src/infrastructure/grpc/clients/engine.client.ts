@@ -1,6 +1,6 @@
 import * as grpc from '@grpc/grpc-js';
 import * as engineProto from '../../../contracts/proto/engine';
-import config from '../config';
+import grpcConfig from '../config';
 import {GrpcClientManager} from '@shared/grpc-client-manager';
 
 export class EngineClient {
@@ -19,6 +19,6 @@ export class EngineClient {
     }
 }
 
-const engineClient = new EngineClient(config.serviceEngineUrl);
+const engineClient = new EngineClient(grpcConfig.serviceEngineUrl);
 
 export default engineClient;

@@ -12,24 +12,20 @@ import ReadyzUseCase from "../application/use-cases/health/readyz";
 import HealthHandler from "../infrastructure/grpc/handlers/health.handler";
 import GrpcService from "../infrastructure/grpc/service";
 import GetOrCreateProfileUseCase from "../application/use-cases/profile/get-or-create-profile";
-import {GetProfileByUserUseCase as GetMyProfileUseCase} from "../application/use-cases/profile/get-profile-by-user";
-import {GetProfileUseCase as GetProfileUseCase} from "../application/use-cases/profile/get-profile";
+import GetProfileUseCase from "../application/use-cases/profile/get-profile";
 import AuthController from "../infrastructure/proxy/controllers/auth.controller";
 import ProfileController from "../infrastructure/proxy/controllers/profile.controller";
 import AuthRoutes from "../infrastructure/proxy/routes/auth.routes";
 import ProfileRoutes from "../infrastructure/proxy/routes/profile.routes";
 import Router from "../infrastructure/proxy/router";
 import OrchestrationHandler from "../infrastructure/grpc/handlers/orchestration.handler";
-import {config as grpcConfig} from "../infrastructure/grpc/config";
+import grpcConfig from "../infrastructure/grpc/config";
 import Application from "../application/application";
-import {
-    config as messageConfig,
-    messageConsumersConfig,
-    messageProducersConfig
-} from "../infrastructure/message/config";
-import {config as jobConfig} from "../infrastructure/job/config";
+import {messageConfig, messageConsumersConfig, messageProducersConfig} from "../infrastructure/message/config";
+import jobConfig from "../infrastructure/job/config";
+import authConfig from "../infrastructure/auth/config";
 import AuthService from "../infrastructure/auth/service";
-import {config as authConfig} from "../infrastructure/auth/config";
+import GetProfileByUserUseCase from "../application/use-cases/profile/get-profile-by-user";
 
 function buildApplication() {
     const authService = new AuthService(authConfig);
@@ -40,7 +36,7 @@ function buildApplication() {
 
     const anonymousSignInUseCase = new AnonymousSignInUseCase();
     const getOrCreateProfileUseCase = new GetOrCreateProfileUseCase();
-    const getMeUseCase = new GetUserUseCase();
+    const getUserUseCase = new GetUserUseCase();
     const refreshTokensUseCase = new RefreshTokensUseCase();
     const logoutUseCase = new LogoutUseCase();
 
@@ -55,17 +51,17 @@ function buildApplication() {
         authService,
         anonymousSignInUseCase,
         getOrCreateProfileUseCase,
-        getMeUseCase,
+        getUserUseCase,
         refreshTokensUseCase,
         logoutUseCase
     );
 
-    const getMyProfileUseCase = new GetMyProfileUseCase();
     const getProfileUseCase = new GetProfileUseCase();
+    const getProfileByUserUseCase = new GetProfileByUserUseCase();
 
     const profileController = new ProfileController(
         authService,
-        getMyProfileUseCase,
+        getProfileByUserUseCase,
         getProfileUseCase,
     );
 

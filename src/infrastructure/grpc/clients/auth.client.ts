@@ -2,7 +2,7 @@ import * as grpc from '@grpc/grpc-js';
 import * as authProto from '../../../contracts/proto/auth';
 import * as emptyProto from "../../../contracts/proto/common/empty";
 import * as responseProto from "../../../contracts/proto/common/response";
-import config from '../config';
+import grpcConfig from '../config';
 import {GrpcClientManager} from '@shared/grpc-client-manager';
 
 
@@ -34,7 +34,7 @@ export class AuthClient {
     }
 }
 
-const authClient = new AuthClient(config.serviceAuthUrl);
+const authClient = new AuthClient(grpcConfig.serviceAuthUrl);
 
 export default authClient;
 
