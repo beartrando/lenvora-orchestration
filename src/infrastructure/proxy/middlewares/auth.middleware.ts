@@ -14,7 +14,7 @@
 //     }
 //
 //     try {
-//         const decoded = jwt.verify(token, app.jwtAccessSecret!);
+//         const decoded = jwt.verify(token, app.accessSecret!);
 //         (req as any).user = decoded;
 //         next();
 //     } catch (err) {

@@ -24,10 +24,11 @@ import {config as grpcConfig} from "../infrastructure/grpc/config";
 import Application from "../application/application";
 import {config as messageConfig, messageProducersConfig, messageConsumersConfig} from "../infrastructure/message/config";
 import {config as jobConfig} from "../infrastructure/job/config";
-
-
+import AuthService from "../infrastructure/auth/service";
+import {config as authConfig} from "../infrastructure/auth/config";
 
 function buildApplication() {
+    const authService = new AuthService(authConfig);
 
     const messageService = new MessageService(messageConfig, messageConsumersConfig);
     const jobService = new JobService(jobConfig, messageConfig, messageProducersConfig)

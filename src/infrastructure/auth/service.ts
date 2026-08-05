@@ -1,24 +1,25 @@
 import jwt, {JwtPayload, SignOptions} from "jsonwebtoken";
-import config from "./config";
 
-import Id from "../../domain/value-objects/id.vo";
 import AccessToken from "../../domain/value-objects/access-token.vo";
 
 import TokenService from "../../application/ports/token-service.port";
+import Id from "../../domain/value-objects/id.vo";
 
 
 interface TokenPayload extends JwtPayload {
     sub: string;
 }
 
+export interface AuthConfig {
+    accessSecret: jwt.Secret;
+}
+
 export class AuthService implements TokenService {
+    constructor(private readonly config: AuthConfig) {
+    }
 
-    private readonly accessSecret: jwt.Secret = config.jwtAccessSecret;
-
-    verifyAccessToken(
-        token: AccessToken,
-    ): Id {
-        const payload = this.payload(token.value, this.accessSecret);
+    verifyAccessToken(token: AccessToken): Id {
+        const payload = this.payload(token.value, this.config.accessSecret);
 
         return new Id(payload.sub);
     }
@@ -38,4 +39,3 @@ export class AuthService implements TokenService {
 }
 
 export default AuthService;
-
