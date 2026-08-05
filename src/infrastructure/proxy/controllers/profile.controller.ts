@@ -3,23 +3,26 @@ import * as profileProto from "../../../contracts/proto/profile";
 import response from "../adapter/response";
 import parseQueryParams from "../utils/parse-query-params";
 import jwtFromProxyRequest from "../utils/jwt-from-proxy-request";
-import GetMeUseCase from "../../../application/use-cases/profile/get-me";
-import GetUseCase from "../../../application/use-cases/profile/get";
+import GetProfileByUserUseCase from "../../../application/use-cases/profile/get-profile-by-user";
+import GetProfileUseCase from "../../../application/use-cases/profile/get-profile";
+import AuthService from "../../auth/service";
+import Id from "../../../domain/value-objects/id.vo";
 
 export class ProfileController {
 
     constructor(
-        private readonly getMeUseCase: GetMeUseCase,
-        private readonly getUseCase: GetUseCase,
+        private readonly authService: AuthService,
+        private readonly getByUSerUseCase: GetProfileByUserUseCase,
+        private readonly getUseCase: GetProfileUseCase,
     ) {
     }
 
     async getMe(
         request: orchestrationProto.ProxyRequest,
     ): Promise<orchestrationProto.ProxyResponse> {
-        const jwt = jwtFromProxyRequest(request);
-
-        const profile = await this.getMeUseCase.execute(jwt);
+        const accessToken = jwtFromProxyRequest(request);
+        const userId = this.authService.verifyAccessToken(accessToken);
+        const profile = await this.getByUSerUseCase.execute(userId, accessToken);
 
         return response.ok(profile);
     }
@@ -32,9 +35,9 @@ export class ProfileController {
 
         // logger.log(request.body);
         // logger.log(profileId);
-        const jwt = jwtFromProxyRequest(request);
+        const accessToken = jwtFromProxyRequest(request);
 
-        const profile = await this.getUseCase.execute(profileId, jwt);
+        const profile = await this.getUseCase.execute(new Id(profileId), accessToken);
 
         return response.ok(profile);
     }

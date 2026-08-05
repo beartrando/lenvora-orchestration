@@ -2,7 +2,7 @@ import DbService from "../infrastructure/db/service";
 import MessageService from "../infrastructure/message/service";
 import JobService from "../infrastructure/job/service";
 import AnonymousSignInUseCase from "../application/use-cases/auth/anonymous-sign-in";
-import GetMeUseCase from "../application/use-cases/auth/get-me";
+import GetUserUseCase from "../application/use-cases/auth/get-user";
 import LogoutUseCase from "../application/use-cases/auth/logout";
 import RefreshTokensUseCase from "../application/use-cases/auth/refresh-tokens";
 import HealthUseCase from "../application/use-cases/health/health";
@@ -11,9 +11,9 @@ import LivezUseCase from "../application/use-cases/health/livez";
 import ReadyzUseCase from "../application/use-cases/health/readyz";
 import HealthHandler from "../infrastructure/grpc/handlers/health.handler";
 import GrpcService from "../infrastructure/grpc/service";
-import GetOrCreateUseCase from "../application/use-cases/profile/get-or-create";
-import {GetMeUseCase as GetMyProfileUseCase} from "../application/use-cases/profile/get-me";
-import {GetUseCase as GetProfileUseCase} from "../application/use-cases/profile/get";
+import GetOrCreateProfileUseCase from "../application/use-cases/profile/get-or-create-profile";
+import {GetProfileByUserUseCase as GetMyProfileUseCase} from "../application/use-cases/profile/get-profile-by-user";
+import {GetProfileUseCase as GetProfileUseCase} from "../application/use-cases/profile/get-profile";
 import AuthController from "../infrastructure/proxy/controllers/auth.controller";
 import ProfileController from "../infrastructure/proxy/controllers/profile.controller";
 import AuthRoutes from "../infrastructure/proxy/routes/auth.routes";
@@ -22,7 +22,11 @@ import Router from "../infrastructure/proxy/router";
 import OrchestrationHandler from "../infrastructure/grpc/handlers/orchestration.handler";
 import {config as grpcConfig} from "../infrastructure/grpc/config";
 import Application from "../application/application";
-import {config as messageConfig, messageProducersConfig, messageConsumersConfig} from "../infrastructure/message/config";
+import {
+    config as messageConfig,
+    messageConsumersConfig,
+    messageProducersConfig
+} from "../infrastructure/message/config";
 import {config as jobConfig} from "../infrastructure/job/config";
 import AuthService from "../infrastructure/auth/service";
 import {config as authConfig} from "../infrastructure/auth/config";
@@ -35,8 +39,8 @@ function buildApplication() {
     const dbService = new DbService();
 
     const anonymousSignInUseCase = new AnonymousSignInUseCase();
-    const getOrCreateProfileUseCase = new GetOrCreateUseCase();
-    const getMeUseCase = new GetMeUseCase();
+    const getOrCreateProfileUseCase = new GetOrCreateProfileUseCase();
+    const getMeUseCase = new GetUserUseCase();
     const refreshTokensUseCase = new RefreshTokensUseCase();
     const logoutUseCase = new LogoutUseCase();
 
@@ -48,6 +52,7 @@ function buildApplication() {
 
 
     const authController = new AuthController(
+        authService,
         anonymousSignInUseCase,
         getOrCreateProfileUseCase,
         getMeUseCase,
@@ -59,6 +64,7 @@ function buildApplication() {
     const getProfileUseCase = new GetProfileUseCase();
 
     const profileController = new ProfileController(
+        authService,
         getMyProfileUseCase,
         getProfileUseCase,
     );

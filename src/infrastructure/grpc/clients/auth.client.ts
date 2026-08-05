@@ -32,10 +32,6 @@ export class AuthClient {
     async get(request: authProto.UserIdRequest, metadata: grpc.Metadata): Promise<authProto.UserResponse | null> {
         return this.manager.call((client, callback) => client.get(request, metadata, callback));
     }
-
-    async getMe(metadata: grpc.Metadata): Promise<authProto.UserResponse | null> {
-        return this.manager.call((client, callback) => client.getMe(this.empty, metadata, callback));
-    }
 }
 
 const authClient = new AuthClient(config.serviceAuthUrl);

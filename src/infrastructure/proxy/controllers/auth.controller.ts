@@ -5,19 +5,22 @@ import response from "../adapter/response";
 import parseBody from "../utils/parse-body";
 import responseFactory from "../response-factory";
 import AnonymousSignInUseCase from "../../../application/use-cases/auth/anonymous-sign-in";
-import GetOrCreateUseCase from "../../../application/use-cases/profile/get-or-create";
-import GetMeUseCase from "../../../application/use-cases/auth/get-me";
+import GetOrCreateProfileUseCase from "../../../application/use-cases/profile/get-or-create-profile";
+import GetUserUseCase from "../../../application/use-cases/auth/get-user";
 import RefreshTokensUseCase from "../../../application/use-cases/auth/refresh-tokens";
 import LogoutUseCase from "../../../application/use-cases/auth/logout";
 import jwtFromProxyRequest from "../utils/jwt-from-proxy-request";
+import AuthService from "../../auth/service";
+import AccessToken from "../../../domain/value-objects/access-token.vo";
 
 
 export class AuthController {
 
     constructor(
+        private readonly authService: AuthService,
         private readonly anonymousSignInUseCase: AnonymousSignInUseCase,
-        private readonly getOrCreateProfileUseCase: GetOrCreateUseCase,
-        private readonly getMeUseCase: GetMeUseCase,
+        private readonly getOrCreateProfileUseCase: GetOrCreateProfileUseCase,
+        private readonly getUserUseCase: GetUserUseCase,
         private readonly refreshTokensUseCase: RefreshTokensUseCase,
         private readonly logoutUseCase: LogoutUseCase,
     ) {
@@ -46,7 +49,7 @@ export class AuthController {
         }
 
         if (resp.auth?.accessToken) {
-            await this.getOrCreateProfileUseCase.execute(resp.auth.accessToken);
+            await this.getOrCreateProfileUseCase.execute(new AccessToken(resp.auth.accessToken));
             return response.ok(resp);
         }
 
@@ -62,8 +65,9 @@ export class AuthController {
     async getMe(
         request: orchestrationProto.ProxyRequest,
     ): Promise<orchestrationProto.ProxyResponse> {
-        const jwt = jwtFromProxyRequest(request);
-        const resp = response.ok(await this.getMeUseCase.execute(jwt));
+        const accessToken = jwtFromProxyRequest(request);
+        const userId = this.authService.verifyAccessToken(accessToken);
+        const resp = response.ok(await this.getUserUseCase.execute(userId, accessToken));
         return response.ok(resp);
     }
 
@@ -79,26 +83,21 @@ export class AuthController {
     async logout(
         request: orchestrationProto.ProxyRequest,
     ): Promise<orchestrationProto.ProxyResponse> {
-        const jwt = jwtFromProxyRequest(request);
+        const accessToken = jwtFromProxyRequest(request);
 
-        const resp = response.ok(await this.logoutUseCase.execute(jwt));
+        const resp = response.ok(await this.logoutUseCase.execute(accessToken));
         return response.ok(resp);
     }
 
-    // export const logout = wrapper(async (req, res) => {
-    //   const userId = getUserId(req);
-    //   return authService.logout(userId);
-    // });
-    //
-    // export const forgotPassword = wrapper(async (req, res) => {
-    //   const email = req.body.email;
-    //   return authService.forgotPassword(email);
-    // });
-    //
-    // export const resetPassword = wrapper(async (req, res) => {
-    //   const {token, newPassword} = req.body;
-    //   return authService.resetPassword(token, newPassword);
-    // });
+// export const forgotPassword = wrapper(async (req, res) => {
+//   const email = req.body.email;
+//   return authService.forgotPassword(email);
+// });
+//
+// export const resetPassword = wrapper(async (req, res) => {
+//   const {token, newPassword} = req.body;
+//   return authService.resetPassword(token, newPassword);
+// });
 
 }
 

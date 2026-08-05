@@ -1,8 +1,9 @@
 import {ProxyRequest} from "../../../contracts/proto/orchestration";
+import AccessToken from "../../../domain/value-objects/access-token.vo";
 
 export const jwtFromProxyRequest = (
     req: ProxyRequest,
-): string => {
+): AccessToken => {
 
     // logger.log(req.headers);
     // logger.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1');
@@ -20,7 +21,7 @@ export const jwtFromProxyRequest = (
         throw new Error("Invalid Authorization header");
     }
 
-    return token;
+    return new AccessToken(token);
 }
 
 export default jwtFromProxyRequest;
