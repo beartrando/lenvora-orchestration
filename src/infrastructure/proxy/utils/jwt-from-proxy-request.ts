@@ -1,5 +1,5 @@
 import {ProxyRequest} from "../../../contracts/proto/orchestration";
-import AccessToken from "../../../domain/value-objects/access-token.vo";
+import AccessToken from "../../../domain/common/value-objects/access-token.vo";
 
 export const jwtFromProxyRequest = (
     req: ProxyRequest,

@@ -1,10 +1,16 @@
+import {randomUUID} from "crypto";
+
 export class Id {
     constructor(
         readonly value: string,
     ) {
         if (!value) {
-            throw new Error("Id cannot be empty");
+            throw new Error("DeviceId cannot be empty");
         }
+    }
+
+    static create(): Id {
+        return new Id(randomUUID());
     }
 
     equals(other: Id): boolean {

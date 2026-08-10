@@ -6,7 +6,7 @@ import jwtFromProxyRequest from "../utils/jwt-from-proxy-request";
 import GetProfileByUserUseCase from "../../../application/use-cases/profile/get-profile-by-user";
 import GetProfileUseCase from "../../../application/use-cases/profile/get-profile";
 import AuthService from "../../auth/service";
-import Id from "../../../domain/value-objects/id.vo";
+import Id from "../../../domain/common/value-objects/id.vo";
 
 export class ProfileController {
 

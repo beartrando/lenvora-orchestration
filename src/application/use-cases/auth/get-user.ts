@@ -1,8 +1,8 @@
 import authClient from "../../../infrastructure/grpc/clients/auth.client";
 import * as authProto from "../../../contracts/proto/auth";
 import AuthHelper from "../../../infrastructure/grpc/helpers/auth.helper";
-import AccessToken from "../../../domain/value-objects/access-token.vo";
-import Id from "../../../domain/value-objects/id.vo";
+import AccessToken from "../../../domain/common/value-objects/access-token.vo";
+import Id from "../../../domain/common/value-objects/id.vo";
 
 export class GetUserUseCase {
     async execute(

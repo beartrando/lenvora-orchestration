@@ -1,7 +1,7 @@
 import * as responseProto from "../../../contracts/proto/common/response";
 import authClient from "../../../infrastructure/grpc/clients/auth.client";
 import AuthHelper from "../../../infrastructure/grpc/helpers/auth.helper";
-import AccessToken from "../../../domain/value-objects/access-token.vo";
+import AccessToken from "../../../domain/common/value-objects/access-token.vo";
 
 export class LogoutUseCase {
     async execute(

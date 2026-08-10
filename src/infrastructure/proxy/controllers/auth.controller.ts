@@ -11,7 +11,7 @@ import RefreshTokensUseCase from "../../../application/use-cases/auth/refresh-to
 import LogoutUseCase from "../../../application/use-cases/auth/logout";
 import jwtFromProxyRequest from "../utils/jwt-from-proxy-request";
 import AuthService from "../../auth/service";
-import AccessToken from "../../../domain/value-objects/access-token.vo";
+import AccessToken from "../../../domain/common/value-objects/access-token.vo";
 
 
 export class AuthController {
