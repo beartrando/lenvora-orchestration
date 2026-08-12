@@ -17,7 +17,7 @@ export class AuthHelper {
 
     static getMetadata(accessToken: AccessToken): grpc.Metadata {
         const metadata = new grpc.Metadata();
-        metadata.add('authorization', 'Bearer ' + accessToken);
+        metadata.add('authorization', 'Bearer ' + accessToken.value);
         return metadata;
     }
 }
