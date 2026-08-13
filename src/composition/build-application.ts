@@ -21,16 +21,17 @@ import Router from "../infrastructure/proxy/router";
 import OrchestrationHandler from "../infrastructure/grpc/handlers/orchestration.handler";
 import grpcConfig from "../infrastructure/grpc/config";
 import Application from "../application/application";
-import {messageConfig, messageConsumersConfig, messageProducersConfig} from "../infrastructure/message/config";
 import jobConfig from "../infrastructure/job/config";
 import authConfig from "../infrastructure/auth/config";
 import AuthService from "../infrastructure/auth/service";
 import GetProfileByUserUseCase from "../application/use-cases/profile/get-profile-by-user";
+import messageConfig from "../infrastructure/message/configs/message.config";
+import messageProducersConfig from "../infrastructure/message/configs/producers.config";
 
 function buildApplication() {
     const authService = new AuthService(authConfig);
 
-    const messageService = new MessageService(messageConfig, messageConsumersConfig);
+    const messageService = new MessageService(messageConfig);
     const jobService = new JobService(jobConfig, messageConfig, messageProducersConfig)
     const dbService = new DbService();
 
