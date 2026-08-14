@@ -12,6 +12,7 @@ import LogoutUseCase from "../../../application/use-cases/auth/logout";
 import jwtFromProxyRequest from "../utils/jwt-from-proxy-request";
 import AuthService from "../../auth/service";
 import AccessToken from "../../../domain/common/value-objects/access-token.vo";
+import logger from "@shared/logger";
 
 
 export class AuthController {
@@ -33,6 +34,8 @@ export class AuthController {
         const {deviceId} = parseBody<authProto.AnonymousSignInRequest>(request.body);
 
         const resp = await this.anonymousSignInUseCase.execute(deviceId);
+
+        logger.log(resp);
 
         if (!resp) {
             return response.ok(
