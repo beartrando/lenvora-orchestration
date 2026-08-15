@@ -1,4 +1,4 @@
-import {AuthConfig} from "./service";
+import AuthConfig from "./interfaces/auth-config";
 
 function required(name: string): string {
     const value = process.env[name];
