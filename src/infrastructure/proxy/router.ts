@@ -1,6 +1,7 @@
 import * as orchestrationProto from '../../contracts/proto/orchestration';
 import AuthRoutes from "./routes/auth.routes";
 import ProfileRoutes from "./routes/profile.routes";
+import {TokenExpiredError} from 'jsonwebtoken';
 
 // const withAuth = (req: Request, res: Response, next: NextFunction) => {
 //     const isPublic = publicPaths.some(path => req.path.startsWith('/' + path));
@@ -76,12 +77,23 @@ export class Router {
         if (!route) {
             return {
                 statusCode: 404,
-                headers: [],
-                body: Buffer.from("Not Found"),
+                headers: [{key: "content-type", value: "application/json",},],
+                body: Buffer.from(JSON.stringify({error: "NotFound",}),),
             };
         }
 
-        return route.handler(request);
+        try {
+            return await route.handler(request);
+        } catch (err) {
+            if (err instanceof TokenExpiredError) {
+                return {
+                    statusCode: 401,
+                    headers: [{key: "content-type", value: "application/json",},],
+                    body: Buffer.from(JSON.stringify({error: "TokenExpiredError",}),),
+                };
+            }
+            throw err;
+        }
     }
 
     private parseMethod(method: string): HttpMethod {
