@@ -35,7 +35,7 @@ export class AuthController {
 
         const resp = await this.anonymousSignInUseCase.execute(deviceId);
 
-        logger.log(resp);
+        // logger.log(resp);
 
         if (!resp) {
             return response.ok(
