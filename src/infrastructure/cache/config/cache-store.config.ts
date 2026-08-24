@@ -1,8 +1,4 @@
-// import ProfileEntity from "../../../domain/engine/engine.entity";
-
-export const cacheStoreConfig = {
-    // engine: {} as ProfileEntity,
-} as const;
+export const cacheStoreConfig = {} as const;
 
 export type CacheStoreKey = keyof typeof cacheStoreConfig;
 

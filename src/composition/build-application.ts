@@ -27,7 +27,6 @@ import AuthService from "../infrastructure/auth/service";
 import GetProfileByUserUseCase from "../application/use-cases/profile/get-profile-by-user";
 import messageConfig from "../infrastructure/message/configs/message.config";
 import messageProducersConfig from "../infrastructure/message/configs/producers.config";
-import logger from "@shared/logger";
 
 function buildApplication() {
     const authService = new AuthService(authConfig);

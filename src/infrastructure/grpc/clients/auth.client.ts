@@ -4,7 +4,6 @@ import * as emptyProto from "../../../contracts/proto/common/empty";
 import * as responseProto from "../../../contracts/proto/common/response";
 import grpcConfig from '../config';
 import {GrpcClientManager} from '@shared/grpc-client-manager';
-import logger from "@shared/logger";
 
 
 export class AuthClient {

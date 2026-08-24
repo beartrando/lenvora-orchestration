@@ -11,7 +11,6 @@ import RefreshTokensUseCase from "../../../application/use-cases/auth/refresh-to
 import LogoutUseCase from "../../../application/use-cases/auth/logout";
 import jwtFromProxyRequest from "../utils/jwt-from-proxy-request";
 import AuthService from "../../auth/service";
-import logger from "@shared/logger";
 import SessionAccessToken from "../../../domain/session/value-objects/session-access-token.vo";
 
 
