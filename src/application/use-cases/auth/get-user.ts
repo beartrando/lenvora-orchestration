@@ -1,13 +1,13 @@
 import authClient from "../../../infrastructure/grpc/clients/auth.client";
 import * as authProto from "../../../contracts/proto/auth";
 import AuthHelper from "../../../infrastructure/grpc/helpers/auth.helper";
-import AccessToken from "../../../domain/common/value-objects/access-token.vo";
-import Id from "../../../domain/common/value-objects/id.vo";
+import SessionAccessToken from "../../../domain/session/value-objects/session-access-token.vo";
+import UserId from "../../../domain/user/value-objects/user-id.vo";
 
 export class GetUserUseCase {
     async execute(
-        userId: Id,
-        accessToken: AccessToken,
+        userId: UserId,
+        accessToken: SessionAccessToken,
     ): Promise<authProto.UserResponse | null> {
         const request: authProto.UserIdRequest = {userId: userId.value};
         return authClient.get(

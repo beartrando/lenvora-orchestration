@@ -6,7 +6,7 @@ import jwtFromProxyRequest from "../utils/jwt-from-proxy-request";
 import GetProfileByUserUseCase from "../../../application/use-cases/profile/get-profile-by-user";
 import GetProfileUseCase from "../../../application/use-cases/profile/get-profile";
 import AuthService from "../../auth/service";
-import Id from "../../../domain/common/value-objects/id.vo";
+import ProfileId from "../../../domain/profile/value-objects/profile-id.vo";
 
 export class ProfileController {
 
@@ -37,7 +37,7 @@ export class ProfileController {
         // logger.log(profileId);
         const accessToken = jwtFromProxyRequest(request);
 
-        const profile = await this.getUseCase.execute(new Id(profileId), accessToken);
+        const profile = await this.getUseCase.execute(new ProfileId(profileId), accessToken);
 
         return response.ok(profile);
     }

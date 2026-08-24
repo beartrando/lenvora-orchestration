@@ -11,8 +11,8 @@ import RefreshTokensUseCase from "../../../application/use-cases/auth/refresh-to
 import LogoutUseCase from "../../../application/use-cases/auth/logout";
 import jwtFromProxyRequest from "../utils/jwt-from-proxy-request";
 import AuthService from "../../auth/service";
-import AccessToken from "../../../domain/common/value-objects/access-token.vo";
 import logger from "@shared/logger";
+import SessionAccessToken from "../../../domain/session/value-objects/session-access-token.vo";
 
 
 export class AuthController {
@@ -42,7 +42,7 @@ export class AuthController {
                 responseFactory.error(
                     authProto.AuthResponse,
                     errorProto.ErrorCode.SERVICE_UNAVAILABLE,
-                    "Auth service unavailable",
+                    "AuthObject service unavailable",
                 )
             );
         }
@@ -52,7 +52,7 @@ export class AuthController {
         }
 
         if (resp.auth?.accessToken) {
-            await this.getOrCreateProfileUseCase.execute(new AccessToken(resp.auth.accessToken));
+            await this.getOrCreateProfileUseCase.execute(new SessionAccessToken(resp.auth.accessToken));
             return response.ok(resp);
         }
 
@@ -60,7 +60,7 @@ export class AuthController {
             responseFactory.error(
                 authProto.AuthResponse,
                 errorProto.ErrorCode.INVALID_RESPONSE,
-                "Auth service returned invalid response",
+                "AuthObject service returned invalid response",
             )
         );
     }

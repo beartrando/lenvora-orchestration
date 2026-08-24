@@ -1,9 +1,9 @@
 import {ProxyRequest} from "../../../contracts/proto/orchestration";
-import AccessToken from "../../../domain/common/value-objects/access-token.vo";
+import SessionAccessToken from "../../../domain/session/value-objects/session-access-token.vo";
 
 export const jwtFromProxyRequest = (
     req: ProxyRequest,
-): AccessToken => {
+): SessionAccessToken => {
 
     // logger.log(req.headers);
     // logger.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1');
@@ -21,7 +21,7 @@ export const jwtFromProxyRequest = (
         throw new Error("Invalid Authorization header");
     }
 
-    return new AccessToken(token);
+    return new SessionAccessToken(token);
 }
 
 export default jwtFromProxyRequest;
