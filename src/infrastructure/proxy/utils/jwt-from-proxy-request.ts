@@ -1,5 +1,6 @@
 import {ProxyRequest} from "../../../contracts/proto/orchestration";
 import SessionAccessToken from "../../../domain/session/value-objects/session-access-token.vo";
+import logger from "@shared/logger";
 
 export const jwtFromProxyRequest = (
     req: ProxyRequest,
@@ -21,6 +22,7 @@ export const jwtFromProxyRequest = (
         throw new Error("Invalid Authorization header");
     }
 
+    logger.log(token);
     return new SessionAccessToken(token);
 }
 

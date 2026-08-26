@@ -7,6 +7,7 @@ import GetProfileByUserUseCase from "../../../application/use-cases/profile/get-
 import GetProfileUseCase from "../../../application/use-cases/profile/get-profile";
 import AuthService from "../../auth/service";
 import ProfileId from "../../../domain/profile/value-objects/profile-id.vo";
+import logger from "@shared/logger";
 
 export class ProfileController {
 
@@ -20,6 +21,7 @@ export class ProfileController {
     async getMe(
         request: orchestrationProto.ProxyRequest,
     ): Promise<orchestrationProto.ProxyResponse> {
+        logger.log(request);
         const accessToken = jwtFromProxyRequest(request);
         const userId = this.authService.verifyAccessToken(accessToken);
         const profile = await this.getProfileByUserUseCase.execute(userId, accessToken);
