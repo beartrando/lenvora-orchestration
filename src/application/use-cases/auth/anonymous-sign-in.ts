@@ -1,5 +1,6 @@
 import authClient from "../../../infrastructure/grpc/clients/auth.client";
 import * as authProto from "../../../contracts/proto/auth";
+import logger from "@shared/logger";
 
 export class AnonymousSignInUseCase {
 
@@ -7,7 +8,9 @@ export class AnonymousSignInUseCase {
         deviceId: string,
     ): Promise<authProto.AuthResponse | null> {
         const request: authProto.AnonymousSignInRequest = {deviceId};
-        return await authClient.anonymousSignIn(request);
+        const result =  await authClient.anonymousSignIn(request);
+        // logger.log(result);
+        return result;
     }
 }
 

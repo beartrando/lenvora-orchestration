@@ -35,8 +35,6 @@ export class AuthController {
 
         const resp = await this.anonymousSignInUseCase.execute(deviceId);
 
-        // logger.log(resp);
-
         if (!resp) {
             return response.ok(
                 responseFactory.error(
@@ -53,6 +51,7 @@ export class AuthController {
 
         if (resp.auth?.accessToken) {
             await this.getOrCreateProfileUseCase.execute(new SessionAccessToken(resp.auth.accessToken));
+            // logger.log(resp);
             return response.ok(resp);
         }
 
@@ -78,7 +77,7 @@ export class AuthController {
         request: orchestrationProto.ProxyRequest,
     ): Promise<orchestrationProto.ProxyResponse> {
         const {token} = parseBody<authProto.RefreshTokensRequest>(request.body);
-        const resp = response.ok(await this.refreshTokensUseCase.execute(token));
+        const resp = await this.refreshTokensUseCase.execute(token);
         // logger.log(resp);
         return response.ok(resp);
     }
