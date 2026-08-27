@@ -12,6 +12,7 @@ import LogoutUseCase from "../../../application/use-cases/auth/logout";
 import jwtFromProxyRequest from "../utils/jwt-from-proxy-request";
 import AuthService from "../../auth/service";
 import SessionAccessToken from "../../../domain/session/value-objects/session-access-token.vo";
+import logger from "@shared/logger";
 
 
 export class AuthController {
@@ -78,6 +79,7 @@ export class AuthController {
     ): Promise<orchestrationProto.ProxyResponse> {
         const {token} = parseBody<authProto.RefreshTokensRequest>(request.body);
         const resp = response.ok(await this.refreshTokensUseCase.execute(token));
+        // logger.log(resp);
         return response.ok(resp);
     }
 

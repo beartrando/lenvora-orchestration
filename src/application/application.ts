@@ -36,7 +36,7 @@ export class Application {
         } catch (err) {
             logger.error(
                 {err},
-                '💥 Failed to start Orchestration',
+                '💥 Failed to start Orchestration service',
             );
             process.exit(1);
         }

@@ -2,6 +2,7 @@ import responseFactory from "../response-factory";
 import * as responseProto from "../../../contracts/proto/common/response";
 import * as errorProto from "../../../contracts/proto/common/error";
 import * as orchestrationProto from "../../../contracts/proto/orchestration";
+import logger from "@shared/logger";
 
 export class ResponseAdapter {
 
@@ -22,6 +23,12 @@ export class ResponseAdapter {
         body: unknown,
     ): orchestrationProto.ProxyResponse {
 
+        // logger.log('------------------------------------')
+        // logger.log(body)
+        // logger.log(Buffer.from(
+        //     JSON.stringify(body),
+        // ))
+        // logger.log('------------------------------------')
         return {
             statusCode,
             headers: [

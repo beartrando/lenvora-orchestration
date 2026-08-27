@@ -26,6 +26,8 @@ export class ProfileController {
         const userId = this.authService.verifyAccessToken(accessToken);
         const profile = await this.getProfileByUserUseCase.execute(userId, accessToken);
 
+        // logger.log(profile);
+
         return response.ok(profile);
     }
 
