@@ -12,7 +12,7 @@ export class ResponseAdapter {
 
     private normalize(data: unknown): unknown {
         return data ?? responseFactory.error(
-            responseProto.EmptyResponse,
+            responseProto.SuccessResponse,
             errorProto.ErrorCode.SERVICE_UNAVAILABLE,
             "Service unavailable",
         );

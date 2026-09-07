@@ -25,7 +25,7 @@ export class AuthClient {
         return this.manager.call((client, callback) => client.refreshTokens(request, callback));
     }
 
-    async logout(metadata: grpc.Metadata): Promise<responseProto.EmptyResponse | null> {
+    async logout(metadata: grpc.Metadata): Promise<responseProto.SuccessResponse | null> {
         return this.manager.call((client, callback) => client.logout(this.empty, metadata, callback));
     }
 

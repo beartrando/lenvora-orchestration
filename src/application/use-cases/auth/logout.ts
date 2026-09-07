@@ -6,7 +6,7 @@ import SessionAccessToken from "../../../domain/session/value-objects/session-ac
 export class LogoutUseCase {
     async execute(
         accessToken: SessionAccessToken,
-    ): Promise<responseProto.EmptyResponse | null> {
+    ): Promise<responseProto.SuccessResponse | null> {
         return authClient.logout(AuthHelper.getMetadata(accessToken));
     }
 }

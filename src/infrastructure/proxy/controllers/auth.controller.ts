@@ -1,6 +1,7 @@
 import * as orchestrationProto from "../../../contracts/proto/orchestration";
 import * as authProto from "../../../contracts/proto/auth";
 import * as errorProto from "../../../contracts/proto/common/error";
+import * as responseProto from "../../../contracts/proto/common/response";
 import response from "../adapter/response";
 import parseBody from "../utils/parse-body";
 import responseFactory from "../response-factory";
@@ -70,6 +71,16 @@ export class AuthController {
         const accessToken = jwtFromProxyRequest(request);
         const userId = this.authService.verifyAccessToken(accessToken);
         const resp = response.ok(await this.getUserUseCase.execute(userId, accessToken));
+        return response.ok(resp);
+    }
+
+    async verify(
+        request: orchestrationProto.ProxyRequest,
+    ): Promise<orchestrationProto.ProxyResponse> {
+        const accessToken = jwtFromProxyRequest(request);
+        this.authService.verifyAccessToken(accessToken);
+        const success = true;
+        const resp = responseProto.SuccessResponse.create({success})
         return response.ok(resp);
     }
 
