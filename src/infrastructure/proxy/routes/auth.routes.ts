@@ -14,7 +14,7 @@ export class AuthRouter {
         router.post("/auth/anonymousSignIn", this.authController.anonymousSignIn.bind(this.authController), false);
         router.get("/auth/getMe", this.authController.getMe.bind(this.authController));
         router.post("/auth/refreshTokens", this.authController.refreshTokens.bind(this.authController), false);
-        router.post("/auth/verity", this.authController.verify.bind(this.authController), false);
+        router.post("/auth/verify", this.authController.verify.bind(this.authController), false);
     }
 }
 

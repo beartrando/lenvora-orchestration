@@ -22,7 +22,7 @@ export const jwtFromProxyRequest = (
         throw new Error("Invalid Authorization header");
     }
 
-    logger.log(token);
+    // logger.log(token);
     return new SessionAccessToken(token);
 }
 

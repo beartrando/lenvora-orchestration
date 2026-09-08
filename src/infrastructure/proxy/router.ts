@@ -1,4 +1,5 @@
 import * as orchestrationProto from '../../contracts/proto/orchestration';
+import * as errorProto from '../../contracts/proto/common/error';
 import AuthRoutes from "./routes/auth.routes";
 import ProfileRoutes from "./routes/profile.routes";
 import {TokenExpiredError} from 'jsonwebtoken';
@@ -78,7 +79,12 @@ export class Router {
             return {
                 statusCode: 404,
                 headers: [{key: "content-type", value: "application/json",},],
-                body: Buffer.from(JSON.stringify({error: "NotFound",}),),
+                body: Buffer.from(
+                    JSON.stringify({
+                        "code": errorProto.ErrorCode.NOT_FOUND,
+                        "message": "NotFoundError"
+                    })
+                ),
             };
         }
 
@@ -89,7 +95,14 @@ export class Router {
                 return {
                     statusCode: 401,
                     headers: [{key: "content-type", value: "application/json",},],
-                    body: Buffer.from(JSON.stringify({error: "TokenExpiredError",}),),
+                    body: Buffer.from(
+                        JSON.stringify({
+                            error: {
+                                "code": errorProto.ErrorCode.TOKEN_EXPIRED,
+                                "message": "TokenExpiredError"
+                            }
+                        })
+                    ),
                 };
             }
             throw err;
