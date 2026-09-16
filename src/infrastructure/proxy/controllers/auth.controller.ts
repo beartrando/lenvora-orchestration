@@ -71,6 +71,8 @@ export class AuthController {
         const accessToken = jwtFromProxyRequest(request);
         const userId = this.authService.verifyAccessToken(accessToken);
         const resp = response.ok(await this.getUserUseCase.execute(userId, accessToken));
+        logger.log(resp);
+
         return response.ok(resp);
     }
 
@@ -81,6 +83,7 @@ export class AuthController {
         this.authService.verifyAccessToken(accessToken);
         const success = true;
         const resp = responseProto.SuccessResponse.create({success})
+        logger.log(resp);
         return response.ok(resp);
     }
 
@@ -89,7 +92,7 @@ export class AuthController {
     ): Promise<orchestrationProto.ProxyResponse> {
         const {token} = parseBody<authProto.RefreshTokensRequest>(request.body);
         const resp = await this.refreshTokensUseCase.execute(token);
-        // logger.log(resp);
+        logger.log(resp);
         return response.ok(resp);
     }
 

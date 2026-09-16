@@ -23,12 +23,17 @@ export class ProfileController {
     ): Promise<orchestrationProto.ProxyResponse> {
         logger.log(request);
         const accessToken = jwtFromProxyRequest(request);
-        const userId = this.authService.verifyAccessToken(accessToken);
-        const profile = await this.getProfileByUserUseCase.execute(userId, accessToken);
+        let userId;
+        try {
+            userId = this.authService.verifyAccessToken(accessToken);
+        } catch (e) {
+            throw e;
+        }
 
-        // logger.log(profile);
+        const profileResp = await this.getProfileByUserUseCase.execute(userId, accessToken);
+        logger.log(profileResp);
 
-        return response.ok(profile);
+        return response.ok(profileResp);
     }
 
     async get(
@@ -41,9 +46,9 @@ export class ProfileController {
         // logger.log(profileId);
         const accessToken = jwtFromProxyRequest(request);
 
-        const profile = await this.getUseCase.execute(new ProfileId(profileId), accessToken);
+        const profileResp = await this.getUseCase.execute(new ProfileId(profileId), accessToken);
 
-        return response.ok(profile);
+        return response.ok(profileResp);
     }
 }
 
