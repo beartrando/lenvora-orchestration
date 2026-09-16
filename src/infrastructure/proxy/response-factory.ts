@@ -11,12 +11,12 @@ export class ResponseFactory {
     >(
         responseType: T,
         code: errorProto.ErrorCode,
-        message: string,
+        details: string,
     ): R {
         return responseType.create({
             error: {
                 code,
-                message,
+                details,
             },
         });
     }
