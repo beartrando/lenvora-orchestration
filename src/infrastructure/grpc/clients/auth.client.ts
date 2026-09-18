@@ -17,11 +17,11 @@ export class AuthClient {
         );
     }
 
-    async anonymousSignIn(request: authProto.AnonymousSignInRequest): Promise<authProto.AuthResponse | null> {
+    async anonymousSignIn(request: authProto.AnonymousSignInRequest): Promise<authProto.SessionResponse | null> {
         return this.manager.call((client, callback) => client.anonymousSignIn(request, callback));
     }
 
-    async refreshTokens(request: authProto.RefreshTokensRequest): Promise<authProto.AuthResponse | null> {
+    async refreshTokens(request: authProto.RefreshTokensRequest): Promise<authProto.SessionResponse | null> {
         return this.manager.call((client, callback) => client.refreshTokens(request, callback));
     }
 

@@ -1,10 +1,8 @@
 import * as orchestrationProto from "../../../contracts/proto/orchestration";
 import * as authProto from "../../../contracts/proto/auth";
-import * as errorProto from "../../../contracts/proto/common/error";
 import * as responseProto from "../../../contracts/proto/common/response";
-import response from "../adapter/response";
+import ResponseAdapter from "../adapter/response";
 import parseBody from "../utils/parse-body";
-import responseFactory from "../response-factory";
 import AnonymousSignInUseCase from "../../../application/use-cases/auth/anonymous-sign-in";
 import GetOrCreateProfileUseCase from "../../../application/use-cases/profile/get-or-create-profile";
 import GetUserUseCase from "../../../application/use-cases/auth/get-user";
@@ -14,11 +12,13 @@ import jwtFromProxyRequest from "../utils/jwt-from-proxy-request";
 import AuthService from "../../auth/service";
 import SessionAccessToken from "../../../domain/session/value-objects/session-access-token.vo";
 import logger from "@shared/logger";
+import {InvalidResponseError, ServiceUnavailableError} from "@shared/errors";
 
 
 export class AuthController {
 
     constructor(
+        private readonly responseAdapter: ResponseAdapter,
         private readonly authService: AuthService,
         private readonly anonymousSignInUseCase: AnonymousSignInUseCase,
         private readonly getOrCreateProfileUseCase: GetOrCreateProfileUseCase,
@@ -37,32 +37,16 @@ export class AuthController {
         const resp = await this.anonymousSignInUseCase.execute(deviceId);
 
         if (!resp) {
-            return response.ok(
-                responseFactory.error(
-                    authProto.AuthResponse,
-                    errorProto.ErrorCode.SERVICE_UNAVAILABLE,
-                    "AuthObject service unavailable",
-                )
-            );
+            throw new ServiceUnavailableError("Auth");
         }
 
-        if (resp.error) {
-            return response.ok(resp);
-        }
-
-        if (resp.auth?.accessToken) {
-            await this.getOrCreateProfileUseCase.execute(new SessionAccessToken(resp.auth.accessToken));
+        if (resp.session?.accessToken) {
+            await this.getOrCreateProfileUseCase.execute(new SessionAccessToken(resp.session.accessToken));
             // logger.log(resp);
-            return response.ok(resp);
+            return this.responseAdapter.ok(resp);
         }
 
-        return response.ok(
-            responseFactory.error(
-                authProto.AuthResponse,
-                errorProto.ErrorCode.INVALID_RESPONSE,
-                "AuthObject service returned invalid response",
-            )
-        );
+        throw new InvalidResponseError("Auth service returned invalid response");
     }
 
     async getMe(
@@ -70,10 +54,10 @@ export class AuthController {
     ): Promise<orchestrationProto.ProxyResponse> {
         const accessToken = jwtFromProxyRequest(request);
         const userId = this.authService.verifyAccessToken(accessToken);
-        const resp = response.ok(await this.getUserUseCase.execute(userId, accessToken));
-        logger.log(resp);
+        const resp = await this.getUserUseCase.execute(userId, accessToken);
+        // logger.log(resp);
 
-        return response.ok(resp);
+        return this.responseAdapter.ok(resp);
     }
 
     async verify(
@@ -83,8 +67,8 @@ export class AuthController {
         this.authService.verifyAccessToken(accessToken);
         const success = true;
         const resp = responseProto.SuccessResponse.create({success})
-        logger.log(resp);
-        return response.ok(resp);
+        // logger.log(resp);
+        return this.responseAdapter.ok(resp);
     }
 
     async refreshTokens(
@@ -92,8 +76,8 @@ export class AuthController {
     ): Promise<orchestrationProto.ProxyResponse> {
         const {token} = parseBody<authProto.RefreshTokensRequest>(request.body);
         const resp = await this.refreshTokensUseCase.execute(token);
-        logger.log(resp);
-        return response.ok(resp);
+        // logger.log(resp);
+        return this.responseAdapter.ok(resp);
     }
 
 
@@ -102,8 +86,8 @@ export class AuthController {
     ): Promise<orchestrationProto.ProxyResponse> {
         const accessToken = jwtFromProxyRequest(request);
 
-        const resp = response.ok(await this.logoutUseCase.execute(accessToken));
-        return response.ok(resp);
+        const resp = await this.logoutUseCase.execute(accessToken);
+        return this.responseAdapter.ok(resp);
     }
 
 // export const forgotPassword = wrapper(async (req, res) => {

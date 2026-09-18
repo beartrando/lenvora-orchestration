@@ -27,6 +27,7 @@ import AuthService from "../infrastructure/auth/service";
 import GetProfileByUserUseCase from "../application/use-cases/profile/get-profile-by-user";
 import messageConfig from "../infrastructure/message/configs/message.config";
 import messageProducersConfig from "../infrastructure/message/configs/producers.config";
+import ResponseAdapter from "../infrastructure/proxy/adapter/response";
 
 function buildApplication() {
     const authService = new AuthService(authConfig);
@@ -41,6 +42,7 @@ function buildApplication() {
     const refreshTokensUseCase = new RefreshTokensUseCase();
     const logoutUseCase = new LogoutUseCase();
 
+    const responseAdapter = new ResponseAdapter();
 
     const healthUseCase = new HealthUseCase(dbService, messageService, jobService);
     const statusUseCase = new StatusUseCase;
@@ -48,6 +50,7 @@ function buildApplication() {
     const readyzUseCase = new ReadyzUseCase;
 
     const authController = new AuthController(
+        responseAdapter,
         authService,
         anonymousSignInUseCase,
         getOrCreateProfileUseCase,
@@ -60,6 +63,7 @@ function buildApplication() {
     const getProfileByUserUseCase = new GetProfileByUserUseCase();
 
     const profileController = new ProfileController(
+        responseAdapter,
         authService,
         getProfileByUserUseCase,
         getProfileUseCase,

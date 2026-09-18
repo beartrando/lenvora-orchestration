@@ -4,7 +4,7 @@ import authClient from "../../../infrastructure/grpc/clients/auth.client";
 export class RefreshTokensUseCase {
     async execute(
         token: string,
-    ): Promise<authProto.AuthResponse | null> {
+    ): Promise<authProto.SessionResponse | null> {
         const request = authProto.RefreshTokensRequest.create({token});
         return authClient.refreshTokens(request);
     }

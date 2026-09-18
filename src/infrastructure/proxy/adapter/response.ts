@@ -1,8 +1,8 @@
-import responseFactory from "../response-factory";
 import * as responseProto from "../../../contracts/proto/common/response";
 import * as errorProto from "../../../contracts/proto/common/error";
 import * as orchestrationProto from "../../../contracts/proto/orchestration";
 import logger from "@shared/logger";
+import {ServiceUnavailableError} from "@shared/errors";
 
 export class ResponseAdapter {
 
@@ -11,11 +11,11 @@ export class ResponseAdapter {
     }
 
     private normalize(data: unknown): unknown {
-        return data ?? responseFactory.error(
-            responseProto.SuccessResponse,
-            errorProto.ErrorCode.SERVICE_UNAVAILABLE,
-            "Service unavailable",
-        );
+        // if (data == null) {
+        //     throw new ServiceUnavailableError();
+        // }
+
+        return data;
     }
 
     private json(
@@ -44,6 +44,4 @@ export class ResponseAdapter {
     }
 }
 
-export const response = new ResponseAdapter();
-
-export default response;
+export default ResponseAdapter;

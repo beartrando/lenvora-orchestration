@@ -1,6 +1,6 @@
 import * as orchestrationProto from "../../../contracts/proto/orchestration";
 import * as profileProto from "../../../contracts/proto/profile";
-import response from "../adapter/response";
+import ResponseAdapter from "../adapter/response";
 import parseQueryParams from "../utils/parse-query-params";
 import jwtFromProxyRequest from "../utils/jwt-from-proxy-request";
 import GetProfileByUserUseCase from "../../../application/use-cases/profile/get-profile-by-user";
@@ -12,6 +12,7 @@ import logger from "@shared/logger";
 export class ProfileController {
 
     constructor(
+        private readonly responseAdapter: ResponseAdapter,
         private readonly authService: AuthService,
         private readonly getProfileByUserUseCase: GetProfileByUserUseCase,
         private readonly getUseCase: GetProfileUseCase,
@@ -33,7 +34,7 @@ export class ProfileController {
         const profileResp = await this.getProfileByUserUseCase.execute(userId, accessToken);
         logger.log(profileResp);
 
-        return response.ok(profileResp);
+        return this.responseAdapter.ok(profileResp);
     }
 
     async get(
@@ -48,7 +49,7 @@ export class ProfileController {
 
         const profileResp = await this.getUseCase.execute(new ProfileId(profileId), accessToken);
 
-        return response.ok(profileResp);
+        return this.responseAdapter.ok(profileResp);
     }
 }
 

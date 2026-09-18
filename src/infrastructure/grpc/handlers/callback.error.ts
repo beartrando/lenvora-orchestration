@@ -1,24 +1,27 @@
 import * as grpc from "@grpc/grpc-js";
 import * as errorProto from "../../../contracts/proto/common/error";
 import {DomainError} from "@shared/errors";
-import logger from "@shared/logger";
+import ResponseAdapter from "../../proxy/adapter/response";
+
+const responseAdapter = new ResponseAdapter;
 
 export function callbackError(
     callback: grpc.sendUnaryData<any>,
-    err: unknown,
+    error: unknown,
 ) {
-    logger.log(err);
-    if (err instanceof DomainError) {
+    if (error instanceof DomainError) {
         return callback(
             null,
-            {
-                error: errorProto.ErrorObject.create({
-                    code: err.code, details: err.message
-                })
-            }
+            responseAdapter.ok(
+                {
+                    error: errorProto.ErrorObject.create({
+                        code: error.code, details: error.message
+                    })
+                }
+            )
         );
     }
-    const message = err instanceof Error ? err.message : "Unknown error";
+    const message = error instanceof Error ? error.message : "Unknown error";
     return callback({code: grpc.status.INTERNAL, details: message}, null);
 }
 

@@ -20,6 +20,7 @@ export class OrchestrationHandler {
 
             callback(null, response);
         } catch (err: any) {
+            logger.log('here')
             // logger.log(call.request);
             // logger.log(err);
             callbackError(callback, err);
