@@ -46,7 +46,7 @@ export class AuthController {
             return this.responseAdapter.ok(resp);
         }
 
-        throw new InvalidResponseError("Auth service returned invalid response");
+        throw new InvalidResponseError("Auth");
     }
 
     async getMe(
