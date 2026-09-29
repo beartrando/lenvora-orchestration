@@ -1,17 +1,17 @@
 import * as grpc from '@grpc/grpc-js';
-import * as engineProto from '../../../contracts/proto/engine';
+import * as gusteauProto from '../../../contracts/proto/gusteau';
 import grpcConfig from '../config';
 import {GrpcClientManager} from '@shared/grpc-client-manager';
 
-export class EngineClient {
-    private readonly manager: GrpcClientManager<engineProto.EngineClient>;
+export class GusteauClient {
+    private readonly manager: GrpcClientManager<gusteauProto.GusteauClient>;
 
     constructor(
         private readonly url: string,
     ) {
         this.manager = new GrpcClientManager(
             () =>
-                new engineProto.EngineClient(
+                new gusteauProto.GusteauClient(
                     this.url,
                     grpc.credentials.createInsecure(),
                 ),
@@ -19,6 +19,6 @@ export class EngineClient {
     }
 }
 
-const engineClient = new EngineClient(grpcConfig.serviceEngineUrl);
+const gusteauClient = new GusteauClient(grpcConfig.serviceGusteauUrl);
 
-export default engineClient;
+export default gusteauClient;
