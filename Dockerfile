@@ -18,7 +18,6 @@ COPY services/orchestration/package*.json ./services/orchestration/
 COPY services/orchestration/jest.config.js ./services/orchestration/
 COPY services/orchestration/tsconfig.json ./services/orchestration/
 COPY services/orchestration/src ./services/orchestration/src/
-COPY services/orchestration/__tests__ ./services/orchestration/__tests__/
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
