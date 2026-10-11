@@ -17,6 +17,7 @@ COPY tsconfig.base.json ./
 COPY services/orchestration/package*.json ./services/orchestration/
 COPY services/orchestration/jest.config.js ./services/orchestration/
 COPY services/orchestration/tsconfig.json ./services/orchestration/
+COPY services/orchestration/jest.setup.ts ./services/orchestration/
 COPY services/orchestration/src ./services/orchestration/src/
 
 RUN apt-get update \
