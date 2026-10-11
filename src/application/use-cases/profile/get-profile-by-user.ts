@@ -20,4 +20,3 @@ export class GetProfileByUserUseCase {
 
 
 export default GetProfileByUserUseCase;
-

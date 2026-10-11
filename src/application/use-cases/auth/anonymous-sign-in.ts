@@ -15,4 +15,3 @@ export class AnonymousSignInUseCase {
 }
 
 export default AnonymousSignInUseCase;
-

@@ -12,4 +12,3 @@ export class LogoutUseCase {
 }
 
 export default LogoutUseCase;
-

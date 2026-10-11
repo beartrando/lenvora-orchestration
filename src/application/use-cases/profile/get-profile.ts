@@ -19,4 +19,3 @@ export class GetProfileUseCase {
 
 
 export default GetProfileUseCase;
-

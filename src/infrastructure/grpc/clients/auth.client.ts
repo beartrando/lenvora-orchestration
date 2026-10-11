@@ -37,4 +37,3 @@ export class AuthClient {
 const authClient = new AuthClient(grpcConfig.serviceAuthUrl);
 
 export default authClient;
-

@@ -41,4 +41,3 @@ export class ProfileClient {
 const profileClient = new ProfileClient(grpcConfig.serviceProfileUrl);
 
 export default profileClient;
-
